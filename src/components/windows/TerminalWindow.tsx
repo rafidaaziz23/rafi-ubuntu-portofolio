@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { Typewriter } from "@/components/Typewriter";
 import { AnimatedHelp } from "@/components/AnimatedHelp";
+import { MatrixRain } from "@/components/MatrixRain";
 import { useSoundEffects } from "@/hooks/useSoundEffects";
 import {
   Terminal as TerminalIcon,
@@ -63,6 +64,8 @@ export function TerminalWindow({
   const { playKeystroke } = useSoundEffects();
   const [inputVal, setInputVal] = useState("");
   const [history, setHistory] = useState<CommandHistoryItem[]>([]);
+  const [commandHistoryList, setCommandHistoryList] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isProcessingAI, setIsProcessingAI] = useState(false);
@@ -93,6 +96,8 @@ export function TerminalWindow({
   const executeCommand = async (cmd: string) => {
     const trimmed = cmd.trim().toLowerCase();
     if (!trimmed) return;
+    setCommandHistoryList((prev) => [cmd, ...prev]);
+    setHistoryIndex(-1);
 
     if (trimmed === "clear") {
       setHistory([]);
@@ -232,6 +237,22 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
         break;
       }
 
+      case "matrix":
+      case "cmatrix":
+        output = <MatrixRain />;
+        break;
+
+      case "sudo rm -rf /":
+      case "rm -rf /":
+      case "sudo rm -rf /*":
+        output = (
+          <div className="text-xs font-mono text-red-400 space-y-1">
+            <div className="font-bold">[SECURITY ALERT] Hypervisor integrity shield triggered!</div>
+            <div>Nice try! You cannot delete Rafida's production system kernel. Incident reported to dev.rafidaaziz@gmail.com.</div>
+          </div>
+        );
+        break;
+
       default:
         isAICommand = true;
         break;
@@ -293,9 +314,57 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
     }
   };
 
+    const AVAILABLE_COMMANDS = [
+    "help",
+    "whoami",
+    "projects",
+    "skills",
+    "experience",
+    "resume",
+    "neofetch",
+    "theme ubuntu",
+    "theme matrix",
+    "theme cyberpunk",
+    "matrix",
+    "contact",
+    "clear",
+  ];
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       executeCommand(inputVal);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (commandHistoryList.length > 0) {
+        const nextIndex = Math.min(historyIndex + 1, commandHistoryList.length - 1);
+        setHistoryIndex(nextIndex);
+        setInputVal(commandHistoryList[nextIndex]);
+        playKeystroke();
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        const nextIndex = historyIndex - 1;
+        setHistoryIndex(nextIndex);
+        setInputVal(commandHistoryList[nextIndex]);
+        playKeystroke();
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1);
+        setInputVal("");
+        playKeystroke();
+      }
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      const current = inputVal.trim().toLowerCase();
+      if (current) {
+        const match = AVAILABLE_COMMANDS.find((c) => c.startsWith(current));
+        if (match) {
+          setInputVal(match);
+          playKeystroke();
+        }
+      }
+    } else if (e.key.length === 1 || e.key === "Backspace") {
+      playKeystroke();
     }
   };
 

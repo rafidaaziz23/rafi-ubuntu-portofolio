@@ -11,6 +11,7 @@ const HELP_LINES = [
   { cmd: "resume", desc: "Open / download Rafida Aziz CV (PDF)" },
   { cmd: "neofetch", desc: "Print Ubuntu ASCII system hardware info" },
   { cmd: "theme <name>", desc: "Switch theme (ubuntu | matrix | cyberpunk)" },
+  { cmd: "matrix", desc: "Digital rain canvas screen (cmatrix)" },
   { cmd: "contact", desc: "Open Thunderbird Mailer / contact info" },
   { cmd: "clear", desc: "Clear terminal command output" },
   { isFooter: true, text: "Note: Any other command will be processed by Rafida-AI (Gemini)" },

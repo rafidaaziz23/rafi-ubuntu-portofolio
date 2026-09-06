@@ -9,6 +9,7 @@ import { CredentialsWindow } from "@/components/windows/CredentialsWindow";
 import { ContactWindow } from "@/components/windows/ContactWindow";
 import { ExperienceWindow } from "@/components/windows/ExperienceWindow";
 import { BootScreen } from "@/components/BootScreen";
+import { AppLauncher } from "@/components/AppLauncher";
 import {
   Terminal as TerminalIcon,
   Folder,
@@ -37,6 +38,9 @@ export default function Home() {
   const [focusedWindow, setFocusedWindow] = useState<ActiveWindow>("terminal");
   const [hasBooted, setHasBooted] = useState(true);
   const [theme, setTheme] = useState("ubuntu");
+  const [isLauncherOpen, setIsLauncherOpen] = useState(false);
+  const [memoryUsage, setMemoryUsage] = useState("4.8");
+  const [cpuLoad, setCpuLoad] = useState("0.18");
 
   useEffect(() => {
     const booted = sessionStorage.getItem("rafz_booted");
@@ -45,6 +49,16 @@ export default function Home() {
     }
     const savedTheme = localStorage.getItem("rafz_theme");
     if (savedTheme) setTheme(savedTheme);
+
+    // Fluctuate memory and CPU load slightly every 2.5s for realistic feel
+    const metricsInterval = setInterval(() => {
+      const randomMem = (4.7 + Math.random() * 0.5).toFixed(1);
+      const randomLoad = (0.12 + Math.random() * 0.16).toFixed(2);
+      setMemoryUsage(randomMem);
+      setCpuLoad(randomLoad);
+    }, 2500);
+
+    return () => clearInterval(metricsInterval);
   }, []);
 
   const handleBootComplete = () => {
@@ -101,6 +115,16 @@ export default function Home() {
   return (
     <>
       {!hasBooted && <BootScreen onComplete={handleBootComplete} />}
+            <AppLauncher
+        isOpen={isLauncherOpen}
+        onClose={() => setIsLauncherOpen(false)}
+        onOpenTerminal={handleOpenTerminal}
+        onOpenProjects={handleOpenProjects}
+        onOpenToolbox={handleOpenToolbox}
+        onOpenCredentials={handleOpenCredentials}
+        onOpenExperience={handleOpenExperience}
+        onOpenContact={handleOpenContact}
+      />
       <div className="relative w-screen h-screen overflow-hidden flex flex-col bg-[#110e11] text-zinc-100 font-sans select-none">
       {/* 1. Desktop Wallpaper Background */}
       <div className={`absolute inset-0 pointer-events-none transition-all duration-700 ${
@@ -135,8 +159,11 @@ export default function Home() {
       <header className="relative z-40 h-7 w-full bg-[#110e11]/90 backdrop-blur-md border-b border-black/40 flex items-center justify-between px-3 text-xs font-medium text-zinc-300">
         {/* Left: Activities & Guest Status */}
         <div className="flex items-center gap-3">
-          <button className="px-2.5 py-0.5 rounded-full hover:bg-white/10 text-white font-semibold transition-colors">
-            Activities
+          <button
+            onClick={() => setIsLauncherOpen(!isLauncherOpen)}
+            className="px-2.5 py-0.5 rounded-full hover:bg-white/10 text-white font-semibold transition-colors flex items-center gap-1.5"
+          >
+            <span>Activities</span>
           </button>
           <div className="hidden sm:flex items-center gap-1.5 text-zinc-300 font-mono text-[11px]">
             <span className="text-[#38B44A]">●</span>
@@ -254,9 +281,9 @@ export default function Home() {
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-zinc-300">KERNEL 6.8.0-GENERIC</span>
           <span className="text-zinc-600">|</span>
-          <span className="text-zinc-400">MEMORY: 4.8GB / 32GB</span>
+          <span className="text-zinc-400">MEMORY: {memoryUsage}GB / 32GB</span>
           <span className="text-zinc-600 hidden md:inline">|</span>
-          <span className="text-emerald-400 hidden md:inline">LOAD: 0.18</span>
+          <span className="text-emerald-400 hidden md:inline">LOAD: {cpuLoad}</span>
         </div>
       </div>
 
@@ -374,8 +401,11 @@ export default function Home() {
 
           {/* App grid */}
           <button
-            title="Show Applications"
-            className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors mt-auto"
+            onClick={() => setIsLauncherOpen(true)}
+            title="Show Applications (App Launcher)"
+            className={`p-2.5 rounded-xl transition-all mt-auto ${
+              isLauncherOpen ? "bg-[#E95420]/20 text-[#E95420] ring-1 ring-[#E95420]" : "text-zinc-400 hover:text-white hover:bg-white/10"
+            }`}
           >
             <Grid className="w-5 h-5" />
           </button>
