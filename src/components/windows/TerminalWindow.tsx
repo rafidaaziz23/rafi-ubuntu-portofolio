@@ -578,19 +578,19 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
           </div>
         </header>
 
-        {/* Content Body */}
-        <div ref={scrollContainerRef} className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 overflow-y-auto custom-scrollbar bg-[#121214]">
+        {/* Static Hero Section - always visible, never scrolled away */}
+        <div className="flex-shrink-0 p-4 sm:p-6 pb-0 bg-[#121214]">
           {/* Terminal Command: whoami */}
           <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-zinc-300 mb-4 select-text">
-              <span className="text-[#38B44A] font-semibold">rafi@nexatriv</span>
-              <span className="text-zinc-500">:</span>
-              <span className="text-[#E95420] font-semibold">~</span>
-              <span className="text-zinc-400">$</span>
-              <span className="text-white font-bold ml-1">whoami</span>
-            </div>
+            <span className="text-[#38B44A] font-semibold">rafi@nexatriv</span>
+            <span className="text-zinc-500">:</span>
+            <span className="text-[#E95420] font-semibold">~</span>
+            <span className="text-zinc-400">$</span>
+            <span className="text-white font-bold ml-1">whoami</span>
+          </div>
 
-            {/* Hero Profile Card */}
-            <div className="rounded-xl bg-[#1A1A1D] border border-white/10 p-4 sm:p-6 shadow-xl relative overflow-hidden backdrop-blur-md select-text">
+          {/* Hero Profile Card */}
+          <div className="rounded-xl bg-[#1A1A1D] border border-white/10 p-4 sm:p-6 shadow-xl relative overflow-hidden backdrop-blur-md select-text">
               {/* Subtle Aubergine Glow in Card Background */}
               <div className="absolute -top-24 -right-24 w-60 h-60 bg-[#E95420]/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -653,7 +653,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
             </div>
 
             {/* 4 High-Density Metrics Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 select-text">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 pb-4 select-text">
               {/* Metric 1 */}
               <div className="p-3 rounded-xl bg-[#1A1A1D]/80 border border-white/10 flex flex-col justify-between">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
@@ -699,10 +699,13 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
                 </span>
               </div>
             </div>
+          </div>
 
+          {/* Scrollable History + Input Section */}
+          <div ref={scrollContainerRef} className="flex flex-col flex-1 min-h-0 px-4 sm:px-6 pb-4 overflow-y-auto custom-scrollbar bg-[#121214]">
             {/* Command Execution History Output */}
             {history.length > 0 && (
-              <div className="mt-4 space-y-3 pt-3 border-t border-white/5">
+              <div className="mt-3 space-y-3 pt-3 border-t border-white/5">
                 {history.map((item, idx) => (
                   <div key={idx} className="space-y-1.5 font-mono select-text">
                     <div className="flex items-center gap-2 text-xs text-zinc-400">
@@ -719,7 +722,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
             )}
 
             {/* Interactive Command Prompt Line */}
-            <div className="mt-4 pt-3 border-t border-white/5 flex items-center gap-2 font-mono text-xs sm:text-sm">
+            <div className="mt-auto pt-3 border-t border-white/5 flex items-center gap-2 font-mono text-xs sm:text-sm">
               <span className="text-[#38B44A] shrink-0 font-semibold">rafi@nexatriv</span>
               <span className="text-zinc-500 shrink-0">:</span>
               <span className="text-[#E95420] shrink-0 font-semibold">{currentPath}</span>
@@ -744,7 +747,6 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
                 </button>
               </div>
             </div>
-
           </div>
       </motion.div>
     </AnimatePresence>
