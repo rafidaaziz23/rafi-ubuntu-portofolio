@@ -124,21 +124,21 @@ export function ProjectsWindow({
         dragControls={dragControls}
         layout
         initial={{ opacity: 0, scale: 0.96, y: 15 }}
-        animate={{
-          opacity: 1,
-          scale: 1,
-          y: 0,
-        }}
+        animate={
+          isMaximized
+            ? { opacity: 1, scale: 1, x: 0, y: 0 }
+            : { opacity: 1, scale: 1, y: 0 }
+        }
         exit={{ opacity: 0, scale: 0.94, y: 20 }}
         transition={{ duration: 0.22, ease: "easeOut" }}
         className={`w-full font-sans select-none flex flex-col ${
           isMaximized
-            ? "fixed inset-0 z-50 rounded-none max-w-none h-screen"
-            : "max-w-6xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10 max-h-[85vh] md:max-h-[750px]"
-        } bg-[#1E1E1E] text-zinc-200 overflow-hidden border border-white/10 backdrop-blur-md ${className}`}
+            ? "w-full h-full rounded-none max-w-none max-h-none border-0 shadow-none"
+            : "max-w-6xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10 max-h-[85vh] md:max-h-[750px] border border-white/10"
+        } bg-[#1E1E1E] text-zinc-200 overflow-hidden backdrop-blur-md ${className}`}
       >
         {/* 1. Header Bar (Ubuntu Nautilus Style) */}
-        <header onPointerDown={(e) => dragControls.start(e)} className="relative cursor-grab active:cursor-grabbing flex items-center justify-between px-3 sm:px-4 py-2.5 bg-gradient-to-r from-[#2C001E] via-[#241f23] to-[#1E1E1E] border-b border-black/50 select-none">
+        <header onPointerDown={(e) => !isMaximized && dragControls.start(e)} className={`relative ${isMaximized ? "" : "cursor-grab active:cursor-grabbing"} flex items-center justify-between px-3 sm:px-4 py-2.5 bg-gradient-to-r from-[#2C001E] via-[#241f23] to-[#1E1E1E] border-b border-black/50 select-none`}>
           {/* Traffic Light Controls */}
           <div className="flex items-center gap-2 z-10 group/traffic">
             <button

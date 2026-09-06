@@ -37,6 +37,7 @@ export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isExperienceOpen, setIsExperienceOpen] = useState(false);
   const [focusedWindow, setFocusedWindow] = useState<ActiveWindow>("terminal");
+  const [maximizedWindow, setMaximizedWindow] = useState<ActiveWindow>(null);
   const [hasBooted, setHasBooted] = useState(true);
   const [theme, setTheme] = useState("ubuntu");
   const [isLauncherOpen, setIsLauncherOpen] = useState(false);
@@ -73,10 +74,8 @@ export default function Home() {
     localStorage.setItem("rafz_theme", newTheme);
   };
 
-
-  // Format current date like Ubuntu GNOME top bar
-  const now = new Date();
-  const dateFormatted = now.toLocaleDateString("en-US", {
+  const dateFormatted = new Date().toLocaleDateString("en-US", {
+    weekday: "short",
     month: "short",
     day: "numeric",
     hour: "2-digit",
@@ -84,34 +83,63 @@ export default function Home() {
     hour12: false,
   });
 
+  const handleToggleMaximize = (windowName: ActiveWindow) => {
+    setMaximizedWindow((prev) => (prev === windowName ? null : windowName));
+    if (windowName) setFocusedWindow(windowName);
+  };
+
+  const getWindowWrapperClass = (windowName: ActiveWindow) => {
+    const isMax = maximizedWindow === windowName;
+    const isFocused = focusedWindow === windowName;
+    const hasOtherMax = maximizedWindow !== null && !isMax;
+
+    if (isMax) {
+      return "absolute inset-0 z-40 w-full h-full max-w-none flex flex-col";
+    }
+    if (hasOtherMax) {
+      return "hidden pointer-events-none";
+    }
+    return `w-full max-w-5xl transition-all duration-150 ${
+      isFocused
+        ? "relative z-30 scale-100"
+        : "absolute z-10 scale-[0.98] opacity-75 pointer-events-auto"
+    }`;
+  };
+
   const handleOpenTerminal = () => {
     setIsTerminalOpen(true);
     setFocusedWindow("terminal");
+    if (maximizedWindow && maximizedWindow !== "terminal") setMaximizedWindow(null);
   };
 
   const handleOpenProjects = () => {
     setIsProjectsOpen(true);
     setFocusedWindow("projects");
+    if (maximizedWindow && maximizedWindow !== "projects") setMaximizedWindow(null);
   };
 
   const handleOpenToolbox = () => {
     setIsToolboxOpen(true);
     setFocusedWindow("toolbox");
+    if (maximizedWindow && maximizedWindow !== "toolbox") setMaximizedWindow(null);
   };
 
   const handleOpenExperience = () => {
     setIsExperienceOpen(true);
     setFocusedWindow("experience");
+    if (maximizedWindow && maximizedWindow !== "experience") setMaximizedWindow(null);
   };
 
   const handleOpenCredentials = () => {
     setIsCredentialsOpen(true);
     setFocusedWindow("credentials");
+    if (maximizedWindow && maximizedWindow !== "credentials") setMaximizedWindow(null);
   };
 
   const handleOpenContact = () => {
     setIsContactOpen(true);
     setFocusedWindow("contact");
+    if (maximizedWindow && maximizedWindow !== "contact") setMaximizedWindow(null);
   };
 
   return (
@@ -427,21 +455,23 @@ export default function Home() {
         </aside>
 
         {/* Desktop Area: Window Manager Container */}
-        <main className="relative flex-1 p-2 pt-8 sm:p-4 sm:pt-10 md:p-6 md:pt-12 overflow-y-auto flex items-start justify-center">
+        <main className={`relative flex-1 ${maximizedWindow ? "p-0 overflow-hidden" : "p-2 pt-8 sm:p-4 sm:pt-10 md:p-6 md:pt-12 overflow-y-auto"} flex items-start justify-center`}>
           {/* Terminal Window (meet-rafida.sh) */}
           {isTerminalOpen && (
             <div
-              onClick={() => setFocusedWindow("terminal")}
-              className={`w-full max-w-5xl transition-all duration-150 ${
-                focusedWindow === "terminal"
-                  ? "relative z-30 scale-100"
-                  : "absolute z-10 scale-[0.98] opacity-75 pointer-events-auto"
-              }`}
+              onClick={() => {
+                setFocusedWindow("terminal");
+                if (maximizedWindow && maximizedWindow !== "terminal") setMaximizedWindow(null);
+              }}
+              className={getWindowWrapperClass("terminal")}
             >
               <TerminalWindow
                 isOpen={isTerminalOpen}
+                isMaximized={maximizedWindow === "terminal"}
+                onMaximize={() => handleToggleMaximize("terminal")}
                 onClose={() => {
                   setIsTerminalOpen(false);
+                  if (maximizedWindow === "terminal") setMaximizedWindow(null);
                   if (focusedWindow === "terminal") {
                     setFocusedWindow(isProjectsOpen ? "projects" : isToolboxOpen ? "toolbox" : null);
                   }
@@ -458,17 +488,19 @@ export default function Home() {
           {/* Projects Window (Nautilus) */}
           {isProjectsOpen && (
             <div
-              onClick={() => setFocusedWindow("projects")}
-              className={`w-full max-w-5xl transition-all duration-150 ${
-                focusedWindow === "projects"
-                  ? "relative z-30 scale-100"
-                  : "absolute z-10 scale-[0.98] opacity-75 pointer-events-auto"
-              }`}
+              onClick={() => {
+                setFocusedWindow("projects");
+                if (maximizedWindow && maximizedWindow !== "projects") setMaximizedWindow(null);
+              }}
+              className={getWindowWrapperClass("projects")}
             >
               <ProjectsWindow
                 isOpen={isProjectsOpen}
+                isMaximized={maximizedWindow === "projects"}
+                onMaximize={() => handleToggleMaximize("projects")}
                 onClose={() => {
                   setIsProjectsOpen(false);
+                  if (maximizedWindow === "projects") setMaximizedWindow(null);
                   if (focusedWindow === "projects") {
                     setFocusedWindow(isTerminalOpen ? "terminal" : isToolboxOpen ? "toolbox" : null);
                   }
@@ -481,17 +513,19 @@ export default function Home() {
           {/* Toolbox Window (System Monitor) */}
           {isToolboxOpen && (
             <div
-              onClick={() => setFocusedWindow("toolbox")}
-              className={`w-full max-w-5xl transition-all duration-150 ${
-                focusedWindow === "toolbox"
-                  ? "relative z-30 scale-100"
-                  : "absolute z-10 scale-[0.98] opacity-75 pointer-events-auto"
-              }`}
+              onClick={() => {
+                setFocusedWindow("toolbox");
+                if (maximizedWindow && maximizedWindow !== "toolbox") setMaximizedWindow(null);
+              }}
+              className={getWindowWrapperClass("toolbox")}
             >
               <ToolboxWindow
                 isOpen={isToolboxOpen}
+                isMaximized={maximizedWindow === "toolbox"}
+                onMaximize={() => handleToggleMaximize("toolbox")}
                 onClose={() => {
                   setIsToolboxOpen(false);
+                  if (maximizedWindow === "toolbox") setMaximizedWindow(null);
                   if (focusedWindow === "toolbox") {
                     setFocusedWindow(isTerminalOpen ? "terminal" : isProjectsOpen ? "projects" : null);
                   }
@@ -503,17 +537,19 @@ export default function Home() {
           {/* Credentials Window (Software Center) */}
           {isCredentialsOpen && (
             <div
-              onClick={() => setFocusedWindow("credentials")}
-              className={`w-full max-w-5xl transition-all duration-150 ${
-                focusedWindow === "credentials"
-                  ? "relative z-30 scale-100"
-                  : "absolute z-10 scale-[0.98] opacity-75 pointer-events-auto"
-              }`}
+              onClick={() => {
+                setFocusedWindow("credentials");
+                if (maximizedWindow && maximizedWindow !== "credentials") setMaximizedWindow(null);
+              }}
+              className={getWindowWrapperClass("credentials")}
             >
               <CredentialsWindow
                 isOpen={isCredentialsOpen}
+                isMaximized={maximizedWindow === "credentials"}
+                onMaximize={() => handleToggleMaximize("credentials")}
                 onClose={() => {
                   setIsCredentialsOpen(false);
+                  if (maximizedWindow === "credentials") setMaximizedWindow(null);
                   if (focusedWindow === "credentials") {
                     setFocusedWindow(isTerminalOpen ? "terminal" : isProjectsOpen ? "projects" : isToolboxOpen ? "toolbox" : null);
                   }
@@ -525,17 +561,19 @@ export default function Home() {
           {/* Experience Window (System Logs) */}
           {isExperienceOpen && (
             <div
-              onClick={() => setFocusedWindow("experience")}
-              className={`w-full max-w-5xl transition-all duration-150 ${
-                focusedWindow === "experience"
-                  ? "relative z-30 scale-100"
-                  : "absolute z-10 scale-[0.98] opacity-75 pointer-events-auto"
-              }`}
+              onClick={() => {
+                setFocusedWindow("experience");
+                if (maximizedWindow && maximizedWindow !== "experience") setMaximizedWindow(null);
+              }}
+              className={getWindowWrapperClass("experience")}
             >
               <ExperienceWindow
                 isOpen={isExperienceOpen}
+                isMaximized={maximizedWindow === "experience"}
+                onMaximize={() => handleToggleMaximize("experience")}
                 onClose={() => {
                   setIsExperienceOpen(false);
+                  if (maximizedWindow === "experience") setMaximizedWindow(null);
                   if (focusedWindow === "experience") {
                     setFocusedWindow(isTerminalOpen ? "terminal" : isProjectsOpen ? "projects" : null);
                   }
@@ -547,17 +585,19 @@ export default function Home() {
           {/* Contact Window (Thunderbird Mailer) */}
           {isContactOpen && (
             <div
-              onClick={() => setFocusedWindow("contact")}
-              className={`w-full max-w-5xl transition-all duration-150 ${
-                focusedWindow === "contact"
-                  ? "relative z-30 scale-100"
-                  : "absolute z-10 scale-[0.98] opacity-75 pointer-events-auto"
-              }`}
+              onClick={() => {
+                setFocusedWindow("contact");
+                if (maximizedWindow && maximizedWindow !== "contact") setMaximizedWindow(null);
+              }}
+              className={getWindowWrapperClass("contact")}
             >
               <ContactWindow
                 isOpen={isContactOpen}
+                isMaximized={maximizedWindow === "contact"}
+                onMaximize={() => handleToggleMaximize("contact")}
                 onClose={() => {
                   setIsContactOpen(false);
+                  if (maximizedWindow === "contact") setMaximizedWindow(null);
                   if (focusedWindow === "contact") {
                     setFocusedWindow(isTerminalOpen ? "terminal" : isProjectsOpen ? "projects" : isToolboxOpen ? "toolbox" : isCredentialsOpen ? "credentials" : null);
                   }
@@ -567,7 +607,7 @@ export default function Home() {
           )}
 
           {/* Empty Desktop State if all windows closed */}
-          {!isTerminalOpen && !isProjectsOpen && !isToolboxOpen && !isCredentialsOpen && !isContactOpen && (
+          {!isTerminalOpen && !isProjectsOpen && !isToolboxOpen && !isCredentialsOpen && !isContactOpen && !isExperienceOpen && (
             <div className="flex flex-col items-center justify-center gap-3 text-center">
               <div className="w-16 h-16 rounded-2xl bg-[#2C001E]/60 border border-[#E95420]/30 flex items-center justify-center shadow-xl">
                 <Grid className="w-8 h-8 text-[#E95420]" />
