@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { X, Maximize2, Minimize2, Briefcase, GraduationCap, MapPin, Calendar, Terminal } from "lucide-react";
 
 interface ExperienceWindowProps {
@@ -67,6 +67,7 @@ export function ExperienceWindow({
 }: ExperienceWindowProps) {
   const [internalClosed, setInternalClosed] = useState(false);
   const [internalMaximized, setInternalMaximized] = useState(false);
+  const dragControls = useDragControls();
   const [activeTab, setActiveTab] = useState<"work" | "edu">("work");
 
   const isMaximized = controlledMaximized ?? internalMaximized;
@@ -94,6 +95,10 @@ export function ExperienceWindow({
   return (
     <AnimatePresence>
       <motion.div
+        drag={!isMaximized}
+        dragMomentum={false}
+        dragListener={false}
+        dragControls={dragControls}
         layout
         initial={{ opacity: 0, scale: 0.96, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -106,7 +111,7 @@ export function ExperienceWindow({
         } bg-[#1E1E1E] text-zinc-200 overflow-hidden ${className}`}
       >
         {/* Header */}
-        <header className="relative flex items-center justify-between px-3 sm:px-4 py-2.5 bg-gradient-to-r from-[#2C001E] via-[#241f23] to-[#1E1E1E] border-b border-black/50 select-none">
+        <header onPointerDown={(e) => dragControls.start(e)} className="relative cursor-grab active:cursor-grabbing flex items-center justify-between px-3 sm:px-4 py-2.5 bg-gradient-to-r from-[#2C001E] via-[#241f23] to-[#1E1E1E] border-b border-black/50 select-none">
           {/* Traffic Light Controls */}
           <div className="flex items-center gap-2 z-10 group/traffic">
             <button

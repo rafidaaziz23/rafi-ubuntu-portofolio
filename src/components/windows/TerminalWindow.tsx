@@ -2,7 +2,10 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useDragControls } from "framer-motion";
+import { Typewriter } from "@/components/Typewriter";
+import { AnimatedHelp } from "@/components/AnimatedHelp";
+import { useSoundEffects } from "@/hooks/useSoundEffects";
 import {
   Terminal as TerminalIcon,
   X,
@@ -33,6 +36,7 @@ export interface TerminalWindowProps {
   onOpenToolbox?: () => void;
   onOpenContact?: () => void;
   onOpenExperience?: () => void;
+  onThemeChange?: (theme: string) => void;
 }
 
 interface CommandHistoryItem {
@@ -51,9 +55,12 @@ export function TerminalWindow({
   onOpenToolbox,
   onOpenContact,
   onOpenExperience,
+  onThemeChange,
 }: TerminalWindowProps) {
   const [internalClosed, setInternalClosed] = useState(false);
   const [internalMaximized, setInternalMaximized] = useState(false);
+  const dragControls = useDragControls();
+  const { playKeystroke } = useSoundEffects();
   const [inputVal, setInputVal] = useState("");
   const [history, setHistory] = useState<CommandHistoryItem[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -97,20 +104,18 @@ export function TerminalWindow({
     let isAICommand = false;
 
     switch (trimmed) {
-      case "help":
+            case "help":
         output = (
-          <div className="text-xs space-y-1 font-mono text-zinc-300">
-            <div className="text-amber-400 font-semibold mb-1">Available System Commands:</div>
-            <div><span className="text-[#E95420] font-bold">whoami</span> — Display author bio & active identity specs</div>
-            <div><span className="text-[#E95420] font-bold">projects</span> — Launch & focus Nautilus Projects Window</div>
-            <div><span className="text-[#E95420] font-bold">skills</span> — Launch & focus System-Toolbox Window</div>
-            <div><span className="text-[#E95420] font-bold">experience</span> — View timeline of work & education logs</div>
-            <div><span className="text-[#E95420] font-bold">resume</span> — Open / download Rafida Aziz CV (PDF)</div>
-            <div><span className="text-[#E95420] font-bold">neofetch</span> — Print Ubuntu ASCII system hardware info</div>
-            <div><span className="text-[#E95420] font-bold">contact</span> — Open Thunderbird Mailer / contact info</div>
-            <div><span className="text-[#E95420] font-bold">clear</span> — Clear terminal command output</div>
-            <div className="text-cyan-400 mt-2 italic">Note: Any other command will be processed by Rafida-AI (Gemini)</div>
-          </div>
+          <AnimatedHelp
+            onLinePrinted={() => {
+              if (scrollContainerRef.current) {
+                scrollContainerRef.current.scrollTo({
+                  top: scrollContainerRef.current.scrollHeight,
+                  behavior: "smooth",
+                });
+              }
+            }}
+          />
         );
         break;
 
@@ -210,6 +215,23 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
         );
         break;
 
+      case "theme":
+      case trimmed.startsWith("theme ") ? trimmed : "": {
+        const args = trimmed.split(" ").filter(Boolean);
+        if (args.length < 2) {
+          output = <div className="text-xs font-mono text-amber-400">Usage: theme [ubuntu | matrix | cyberpunk]</div>;
+        } else {
+          const t = args[1];
+          if (["ubuntu", "matrix", "cyberpunk"].includes(t)) {
+            if (onThemeChange) onThemeChange(t);
+            output = <div className="text-xs font-mono text-emerald-400">Theme updated to: {t}</div>;
+          } else {
+            output = <div className="text-xs font-mono text-amber-400">Available themes: ubuntu, matrix, cyberpunk</div>;
+          }
+        }
+        break;
+      }
+
       default:
         isAICommand = true;
         break;
@@ -251,7 +273,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
         const newHistory = [...prev];
         newHistory[newHistory.length - 1].output = (
            <div className="text-xs font-mono text-cyan-300 whitespace-pre-wrap leading-relaxed">
-             {aiOutputText}
+             <Typewriter text={aiOutputText} onCharacterTyped={() => { if(scrollContainerRef.current) scrollContainerRef.current.scrollTo({ top: scrollContainerRef.current.scrollHeight }); }} />
            </div>
         );
         return newHistory;
@@ -304,6 +326,10 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
     <AnimatePresence>
       <motion.div
         layout
+        drag={!isMaximized}
+        dragMomentum={false}
+        dragListener={false}
+        dragControls={dragControls}
         initial={{ opacity: 0, scale: 0.96, y: 15 }}
         animate={{
           opacity: 1,
@@ -319,7 +345,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
         } bg-[#18181A] text-zinc-200 overflow-hidden border border-white/10 backdrop-blur-md ${className}`}
       >
         {/* 1. Terminal Window Header Bar */}
-        <header className="relative flex items-center justify-between px-3 sm:px-4 py-2.5 bg-gradient-to-r from-[#2C001E] via-[#241f23] to-[#18181A] border-b border-black/50 select-none">
+        <header onPointerDown={(e) => dragControls.start(e)} className="relative cursor-grab active:cursor-grabbing flex items-center justify-between px-3 sm:px-4 py-2.5 bg-gradient-to-r from-[#2C001E] via-[#241f23] to-[#18181A] border-b border-black/50 select-none">
           {/* Traffic Light Controls */}
           <div className="flex items-center gap-2 z-10 group/traffic">
             <button

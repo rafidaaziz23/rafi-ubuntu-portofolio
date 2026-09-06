@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { TerminalWindow } from "@/components/windows/TerminalWindow";
 import { ProjectsWindow } from "@/components/windows/ProjectsWindow";
@@ -8,6 +8,7 @@ import { ToolboxWindow } from "@/components/windows/ToolboxWindow";
 import { CredentialsWindow } from "@/components/windows/CredentialsWindow";
 import { ContactWindow } from "@/components/windows/ContactWindow";
 import { ExperienceWindow } from "@/components/windows/ExperienceWindow";
+import { BootScreen } from "@/components/BootScreen";
 import {
   Terminal as TerminalIcon,
   Folder,
@@ -34,6 +35,28 @@ export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isExperienceOpen, setIsExperienceOpen] = useState(false);
   const [focusedWindow, setFocusedWindow] = useState<ActiveWindow>("terminal");
+  const [hasBooted, setHasBooted] = useState(true);
+  const [theme, setTheme] = useState("ubuntu");
+
+  useEffect(() => {
+    const booted = sessionStorage.getItem("rafz_booted");
+    if (!booted) {
+      setHasBooted(false);
+    }
+    const savedTheme = localStorage.getItem("rafz_theme");
+    if (savedTheme) setTheme(savedTheme);
+  }, []);
+
+  const handleBootComplete = () => {
+    sessionStorage.setItem("rafz_booted", "true");
+    setHasBooted(true);
+  };
+
+  const handleThemeChange = (newTheme: string) => {
+    setTheme(newTheme);
+    localStorage.setItem("rafz_theme", newTheme);
+  };
+
 
   // Format current date like Ubuntu GNOME top bar
   const now = new Date();
@@ -76,12 +99,36 @@ export default function Home() {
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden flex flex-col bg-[#110e11] text-zinc-100 font-sans select-none">
-      {/* 1. Ubuntu GNOME Desktop Wallpaper */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-[#2C001E] via-[#1c0a18] to-[#0c090c]">
+    <>
+      {!hasBooted && <BootScreen onComplete={handleBootComplete} />}
+      <div className="relative w-screen h-screen overflow-hidden flex flex-col bg-[#110e11] text-zinc-100 font-sans select-none">
+      {/* 1. Desktop Wallpaper Background */}
+      <div className={`absolute inset-0 pointer-events-none transition-all duration-700 ${
+        theme === "matrix" ? "bg-[#030a05]" : 
+        theme === "cyberpunk" ? "bg-gradient-to-br from-[#090014] via-[#1a0033] to-[#2d004d]" :
+        "bg-gradient-to-br from-[#2C001E] via-[#1c0a18] to-[#0c090c]"
+      }`}>
         {/* Subtle Ambient Radial Glows */}
-        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-[#E95420]/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-[#77216F]/15 rounded-full blur-3xl" />
+        {theme === "ubuntu" && (
+          <>
+            <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-[#E95420]/15 rounded-full blur-3xl" />
+            <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-[#77216F]/20 rounded-full blur-3xl" />
+          </>
+        )}
+        {theme === "cyberpunk" && (
+          <>
+            <div className="absolute -top-32 -left-32 w-[650px] h-[650px] bg-[#00f0ff]/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute -bottom-32 -right-32 w-[650px] h-[650px] bg-[#ff007f]/25 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#00f0ff_1px,transparent_1px)] [background-size:24px_24px]" />
+          </>
+        )}
+        {theme === "matrix" && (
+          <>
+            <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-[#00ff66]/15 rounded-full blur-3xl" />
+            <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-[#00aa44]/20 rounded-full blur-3xl" />
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#00ff66_1px,transparent_1px)] [background-size:20px_20px]" />
+          </>
+        )}
       </div>
 
       {/* 2. Ubuntu Top Bar */}
@@ -358,6 +405,7 @@ export default function Home() {
                 onOpenToolbox={handleOpenToolbox}
                 onOpenContact={handleOpenContact}
                 onOpenExperience={handleOpenExperience}
+                onThemeChange={handleThemeChange}
               />
             </div>
           )}
@@ -525,5 +573,6 @@ export default function Home() {
         </main>
       </div>
     </div>
+    </>
   );
 }

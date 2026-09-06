@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import {
   Folder,
   FolderOpen,
@@ -50,6 +50,7 @@ export function ProjectsWindow({
 }: ProjectsWindowProps) {
   const [internalClosed, setInternalClosed] = useState(false);
   const [internalMaximized, setInternalMaximized] = useState(false);
+  const dragControls = useDragControls();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -117,6 +118,10 @@ export function ProjectsWindow({
   return (
     <AnimatePresence>
       <motion.div
+        drag={!isMaximized}
+        dragMomentum={false}
+        dragListener={false}
+        dragControls={dragControls}
         layout
         initial={{ opacity: 0, scale: 0.96, y: 15 }}
         animate={{
@@ -133,7 +138,7 @@ export function ProjectsWindow({
         } bg-[#1E1E1E] text-zinc-200 overflow-hidden border border-white/10 backdrop-blur-md ${className}`}
       >
         {/* 1. Header Bar (Ubuntu Nautilus Style) */}
-        <header className="relative flex items-center justify-between px-3 sm:px-4 py-2.5 bg-gradient-to-r from-[#2C001E] via-[#241f23] to-[#1E1E1E] border-b border-black/50 select-none">
+        <header onPointerDown={(e) => dragControls.start(e)} className="relative cursor-grab active:cursor-grabbing flex items-center justify-between px-3 sm:px-4 py-2.5 bg-gradient-to-r from-[#2C001E] via-[#241f23] to-[#1E1E1E] border-b border-black/50 select-none">
           {/* Traffic Light Controls */}
           <div className="flex items-center gap-2 z-10 group/traffic">
             <button
