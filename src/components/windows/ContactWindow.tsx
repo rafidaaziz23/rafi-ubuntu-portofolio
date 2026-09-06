@@ -100,10 +100,6 @@ export function ContactWindow({
               <X className="w-2.5 h-2.5 text-black/80 opacity-0 group-hover/traffic:opacity-100 transition-opacity" />
             </button>
             <button
-              title="Minimize (Disabled)"
-              className="w-3.5 h-3.5 rounded-full bg-zinc-600 flex items-center justify-center shadow-sm border border-black/10 opacity-50 cursor-not-allowed"
-            />
-            <button
               onClick={handleToggleMaximize}
               title={isMaximized ? "Restore Window" : "Expand Window"}
               className="w-3.5 h-3.5 rounded-full bg-[#38B44A] flex items-center justify-center shadow-sm border border-emerald-900/30"
