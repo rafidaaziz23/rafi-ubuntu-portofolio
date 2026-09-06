@@ -7,6 +7,7 @@ import { ProjectsWindow } from "@/components/windows/ProjectsWindow";
 import { ToolboxWindow } from "@/components/windows/ToolboxWindow";
 import { CredentialsWindow } from "@/components/windows/CredentialsWindow";
 import { ContactWindow } from "@/components/windows/ContactWindow";
+import { ExperienceWindow } from "@/components/windows/ExperienceWindow";
 import {
   Terminal as TerminalIcon,
   Folder,
@@ -23,7 +24,7 @@ import {
   Layers,
 } from "lucide-react";
 
-type ActiveWindow = "terminal" | "projects" | "toolbox" | "credentials" | "contact" | null;
+type ActiveWindow = "terminal" | "projects" | "toolbox" | "credentials" | "contact" | "experience" | null;
 
 export default function Home() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(true);
@@ -31,6 +32,7 @@ export default function Home() {
   const [isToolboxOpen, setIsToolboxOpen] = useState(false);
   const [isCredentialsOpen, setIsCredentialsOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isExperienceOpen, setIsExperienceOpen] = useState(false);
   const [focusedWindow, setFocusedWindow] = useState<ActiveWindow>("terminal");
 
   // Format current date like Ubuntu GNOME top bar
@@ -56,6 +58,11 @@ export default function Home() {
   const handleOpenToolbox = () => {
     setIsToolboxOpen(true);
     setFocusedWindow("toolbox");
+  };
+
+  const handleOpenExperience = () => {
+    setIsExperienceOpen(true);
+    setFocusedWindow("experience");
   };
 
   const handleOpenCredentials = () => {
@@ -168,6 +175,19 @@ export default function Home() {
             <span>Credentials</span>
           </button>
 
+          {/* Experience */}
+          <button
+            onClick={handleOpenExperience}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-md transition-all text-xs font-mono border ${
+              isExperienceOpen && focusedWindow === "experience"
+                ? "bg-[#E95420]/20 text-white border-[#E95420] shadow-[0_0_10px_rgba(233,84,32,0.25)] font-semibold"
+                : "text-zinc-400 hover:text-white hover:bg-white/5 border-white/5"
+            }`}
+          >
+            <Activity className="w-3 h-3 text-pink-400" />
+            <span>Experience</span>
+          </button>
+
           {/* Say-Hello */}
           <button
             onClick={handleOpenContact}
@@ -269,6 +289,24 @@ export default function Home() {
             )}
           </button>
 
+          {/* Experience launcher */}
+          <button
+            onClick={handleOpenExperience}
+            title="Experience & Education (System Logs)"
+            className={`relative p-2.5 rounded-xl transition-all ${
+              isExperienceOpen && focusedWindow === "experience"
+                ? "bg-[#E95420]/20 text-[#E95420] shadow-[0_0_15px_rgba(233,84,32,0.3)] ring-1 ring-[#E95420]"
+                : isExperienceOpen
+                ? "bg-white/5 text-zinc-300"
+                : "text-pink-400 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <Activity className="w-5 h-5 text-pink-400" />
+            {isExperienceOpen && (
+              <span className="absolute -left-1 top-1/2 -translate-y-1/2 w-1 h-2 rounded-r-full bg-[#E95420]" />
+            )}
+          </button>
+
           {/* Mail launcher */}
           <button
             onClick={handleOpenContact}
@@ -318,6 +356,8 @@ export default function Home() {
                 }}
                 onExploreProjects={handleOpenProjects}
                 onOpenToolbox={handleOpenToolbox}
+                onOpenContact={handleOpenContact}
+                onOpenExperience={handleOpenExperience}
               />
             </div>
           )}
@@ -383,6 +423,28 @@ export default function Home() {
                   setIsCredentialsOpen(false);
                   if (focusedWindow === "credentials") {
                     setFocusedWindow(isTerminalOpen ? "terminal" : isProjectsOpen ? "projects" : isToolboxOpen ? "toolbox" : null);
+                  }
+                }}
+              />
+            </div>
+          )}
+
+          {/* Experience Window (System Logs) */}
+          {isExperienceOpen && (
+            <div
+              onClick={() => setFocusedWindow("experience")}
+              className={`w-full max-w-5xl transition-all duration-150 ${
+                focusedWindow === "experience"
+                  ? "relative z-30 scale-100"
+                  : "absolute z-10 scale-[0.98] opacity-75 pointer-events-auto"
+              }`}
+            >
+              <ExperienceWindow
+                isOpen={isExperienceOpen}
+                onClose={() => {
+                  setIsExperienceOpen(false);
+                  if (focusedWindow === "experience") {
+                    setFocusedWindow(isTerminalOpen ? "terminal" : isProjectsOpen ? "projects" : null);
                   }
                 }}
               />

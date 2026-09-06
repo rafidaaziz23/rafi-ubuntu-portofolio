@@ -32,6 +32,7 @@ export interface TerminalWindowProps {
   onExploreProjects?: () => void;
   onOpenToolbox?: () => void;
   onOpenContact?: () => void;
+  onOpenExperience?: () => void;
 }
 
 interface CommandHistoryItem {
@@ -49,6 +50,7 @@ export function TerminalWindow({
   onExploreProjects,
   onOpenToolbox,
   onOpenContact,
+  onOpenExperience,
 }: TerminalWindowProps) {
   const [internalClosed, setInternalClosed] = useState(false);
   const [internalMaximized, setInternalMaximized] = useState(false);
@@ -56,6 +58,7 @@ export function TerminalWindow({
   const [history, setHistory] = useState<CommandHistoryItem[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isProcessingAI, setIsProcessingAI] = useState(false);
 
   const isMaximized = controlledMaximized ?? internalMaximized;
   const isVisible = isOpen && !internalClosed;
@@ -80,11 +83,18 @@ export function TerminalWindow({
     setInternalClosed(false);
   };
 
-  const executeCommand = (cmd: string) => {
+  const executeCommand = async (cmd: string) => {
     const trimmed = cmd.trim().toLowerCase();
     if (!trimmed) return;
 
+    if (trimmed === "clear") {
+      setHistory([]);
+      setInputVal("");
+      return;
+    }
+
     let output: React.ReactNode = null;
+    let isAICommand = false;
 
     switch (trimmed) {
       case "help":
@@ -94,10 +104,12 @@ export function TerminalWindow({
             <div><span className="text-[#E95420] font-bold">whoami</span> — Display author bio & active identity specs</div>
             <div><span className="text-[#E95420] font-bold">projects</span> — Launch & focus Nautilus Projects Window</div>
             <div><span className="text-[#E95420] font-bold">skills</span> — Launch & focus System-Toolbox Window</div>
+            <div><span className="text-[#E95420] font-bold">experience</span> — View timeline of work & education logs</div>
             <div><span className="text-[#E95420] font-bold">resume</span> — Open / download Rafida Aziz CV (PDF)</div>
             <div><span className="text-[#E95420] font-bold">neofetch</span> — Print Ubuntu ASCII system hardware info</div>
             <div><span className="text-[#E95420] font-bold">contact</span> — Open Thunderbird Mailer / contact info</div>
             <div><span className="text-[#E95420] font-bold">clear</span> — Clear terminal command output</div>
+            <div className="text-cyan-400 mt-2 italic">Note: Any other command will be processed by Rafida-AI (Gemini)</div>
           </div>
         );
         break;
@@ -134,37 +146,33 @@ export function TerminalWindow({
 
       case "resume":
       case "cv":
-        window.open("/cv/CV_Rafida Aziz.pdf", "_blank");
-        output = (
-          <div className="text-xs font-mono text-emerald-400">
-            Opening `/cv/CV_Rafida Aziz.pdf` in a new tab...
-          </div>
-        );
+        window.open("/cv/CV_Rafida%20Aziz.pdf", "_blank");
+        output = <div className="text-xs font-mono text-emerald-400">Downloading resume (PDF)...</div>;
         break;
 
       case "contact":
-      case "mail":
         if (onOpenContact) {
           onOpenContact();
           output = <div className="text-xs font-mono text-emerald-400">Opening Thunderbird Mailer...</div>;
         } else {
-          output = (
-            <div className="text-xs font-mono text-zinc-300">
-              Email: <span className="text-[#E95420]">rafida.core@gmail.com</span> | LinkedIn: <span className="text-cyan-400">/in/rafida-aziz</span>
-            </div>
-          );
+          output = <div className="text-xs font-mono text-amber-400">Contact handler ready.</div>;
         }
         break;
 
-      case "clear":
-        setHistory([]);
-        setInputVal("");
-        return;
+      case "experience":
+      case "education":
+        if (onOpenExperience) {
+          onOpenExperience();
+          output = <div className="text-xs font-mono text-emerald-400">Opening System Logs Viewer (Experience)...</div>;
+        } else {
+          output = <div className="text-xs font-mono text-amber-400">Experience handler ready.</div>;
+        }
+        break;
 
       case "neofetch":
         output = (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono py-2">
-            <pre className="text-[#E95420] text-[11px] leading-tight select-none">
+          <div className="text-xs font-mono text-zinc-300 flex items-start gap-4">
+            <div className="text-[#E95420] whitespace-pre hidden sm:block">
 {`            .-/+oossssoo+/-.
         \`:+ssssssssssssssssss+:\`
       -+ssssssssssssssssssyyssss+-
@@ -178,15 +186,15 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
 ossyNMMMNyMMhsssssssssssssshmmmhssssssso
 +sssshhhyNMMNyssssssssssssyNMMMysssssss+
 .ssssssssdMMMNhsssssssssshNMMMdssssssss.
- /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/
+ \sssssssshNMMMyhhyyyyhdNMMMNhssssssss/
   +sssssssssdmydMMMMMMMMddddyssssssss+
-   /ssssssssssshdmNNNNmyNMMMMhssssss/
+   \ssssssssssshdmmNNmmyNMMMMhssssss/
     .ossssssssssssssssssdMMMNysssso.
       -+sssssssssssssssssyyyssss+-
         \`:+ssssssssssssssssss+:\`
             .-/+oossssoo+/-.`}
-            </pre>
-            <div className="space-y-1 text-zinc-300 text-xs flex flex-col justify-center">
+            </div>
+            <div className="flex flex-col gap-1">
               <div className="text-[#E95420] font-bold">rafi@nexatriv</div>
               <div className="text-zinc-600">----------------------</div>
               <div><span className="text-zinc-500">OS:</span> Ubuntu 24.04 LTS x86_64</div>
@@ -197,39 +205,70 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
               <div><span className="text-zinc-500">Terminal:</span> meet-rafida.sh</div>
               <div><span className="text-zinc-500">CPU:</span> Neural & Cloud Architect Core</div>
               <div><span className="text-zinc-500">Memory:</span> 4.8GiB / 32.0GiB</div>
-              <div className="flex gap-1 pt-2">
-                <span className="w-3 h-3 bg-red-500 rounded-sm inline-block" />
-                <span className="w-3 h-3 bg-amber-500 rounded-sm inline-block" />
-                <span className="w-3 h-3 bg-yellow-500 rounded-sm inline-block" />
-                <span className="w-3 h-3 bg-green-500 rounded-sm inline-block" />
-                <span className="w-3 h-3 bg-cyan-500 rounded-sm inline-block" />
-                <span className="w-3 h-3 bg-blue-500 rounded-sm inline-block" />
-                <span className="w-3 h-3 bg-purple-500 rounded-sm inline-block" />
-              </div>
             </div>
           </div>
         );
         break;
 
-      case "sudo":
-        output = (
-          <div className="text-xs font-mono text-red-400">
-            rafida is already in the sudoers file. Incident reported to galaxy command.
-          </div>
-        );
-        break;
-
       default:
-        output = (
-          <div className="text-xs font-mono text-red-400">
-            zsh: command not found: {trimmed}. Type <span className="text-amber-400 font-bold">help</span> to see available commands.
-          </div>
-        );
+        isAICommand = true;
         break;
     }
 
-    setHistory((prev) => [...prev, { command: cmd, output }]);
+    if (!isAICommand) {
+      setHistory((prev) => [...prev, { command: cmd, output }]);
+      setInputVal("");
+      return;
+    }
+
+    // AI Command handling
+    setIsProcessingAI(true);
     setInputVal("");
+    
+    // add loading placeholder
+    setHistory((prev) => [...prev, { 
+      command: cmd, 
+      output: (
+        <div className="text-xs font-mono text-zinc-400 flex items-center gap-2">
+           <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+           Processing via Rafida-AI (Gemini)...
+        </div>
+      ) 
+    }]);
+
+    try {
+      const res = await fetch("/api/terminal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: trimmed }),
+      });
+      const data = await res.json();
+      
+      let aiOutputText = data.text;
+      if (data.error) aiOutputText = "Error: " + data.error;
+
+      setHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1].output = (
+           <div className="text-xs font-mono text-cyan-300 whitespace-pre-wrap leading-relaxed">
+             {aiOutputText}
+           </div>
+        );
+        return newHistory;
+      });
+    } catch (e) {
+      setHistory((prev) => {
+        const newHistory = [...prev];
+        newHistory[newHistory.length - 1].output = (
+           <div className="text-xs font-mono text-red-400">
+             [System Error]: Gemini AI connection failed.
+           </div>
+        );
+        return newHistory;
+      });
+    } finally {
+      setIsProcessingAI(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -478,8 +517,9 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
                   value={inputVal}
                   onChange={(e) => setInputVal(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="type 'help', 'neofetch', or 'projects'..."
-                  className="w-full bg-transparent text-white font-mono text-xs sm:text-sm focus:outline-none placeholder-zinc-600 caret-[#E95420]"
+                  disabled={isProcessingAI}
+                  placeholder={isProcessingAI ? "AI is processing..." : "type 'help' or ask Rafida-AI anything..."}
+                  className="w-full bg-transparent text-white font-mono text-xs sm:text-sm focus:outline-none placeholder-zinc-600 caret-[#E95420] disabled:opacity-50"
                 />
                 <button
                   onClick={() => executeCommand(inputVal)}
