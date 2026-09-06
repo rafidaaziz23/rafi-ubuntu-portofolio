@@ -10,6 +10,7 @@ import { ContactWindow } from "@/components/windows/ContactWindow";
 import { ExperienceWindow } from "@/components/windows/ExperienceWindow";
 import { BootScreen } from "@/components/BootScreen";
 import { AppLauncher } from "@/components/AppLauncher";
+import { CalendarDropdown } from "@/components/CalendarDropdown";
 import {
   Terminal as TerminalIcon,
   Folder,
@@ -39,6 +40,7 @@ export default function Home() {
   const [hasBooted, setHasBooted] = useState(true);
   const [theme, setTheme] = useState("ubuntu");
   const [isLauncherOpen, setIsLauncherOpen] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [memoryUsage, setMemoryUsage] = useState("4.8");
   const [cpuLoad, setCpuLoad] = useState("0.18");
 
@@ -115,7 +117,12 @@ export default function Home() {
   return (
     <>
       {!hasBooted && <BootScreen onComplete={handleBootComplete} />}
-            <AppLauncher
+                  <CalendarDropdown
+        isOpen={isCalendarOpen}
+        onClose={() => setIsCalendarOpen(false)}
+        onOpenContact={handleOpenContact}
+      />
+      <AppLauncher
         isOpen={isLauncherOpen}
         onClose={() => setIsLauncherOpen(false)}
         onOpenTerminal={handleOpenTerminal}
@@ -173,9 +180,17 @@ export default function Home() {
         </div>
 
         {/* Center: Clock */}
-        <div className="absolute left-1/2 -translate-x-1/2 font-mono text-[11px] text-zinc-200">
-          {dateFormatted}
-        </div>
+        <button
+          onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+          title="Open Calendar & Notification Center"
+          className={`absolute left-1/2 -translate-x-1/2 font-mono text-[11px] px-2.5 py-0.5 rounded-full transition-all flex items-center gap-1.5 ${
+            isCalendarOpen
+              ? "bg-[#E95420]/20 text-white ring-1 ring-[#E95420]"
+              : "text-zinc-200 hover:text-white hover:bg-white/10"
+          }`}
+        >
+          <span>{dateFormatted}</span>
+        </button>
 
         {/* Right: Quick Settings & User Avatar */}
         <div className="flex items-center gap-2.5">

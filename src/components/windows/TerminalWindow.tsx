@@ -42,6 +42,7 @@ export interface TerminalWindowProps {
 
 interface CommandHistoryItem {
   command: string;
+  path?: string;
   output: React.ReactNode;
 }
 
@@ -63,6 +64,7 @@ export function TerminalWindow({
   const dragControls = useDragControls();
   const { playKeystroke } = useSoundEffects();
   const [inputVal, setInputVal] = useState("");
+  const [currentPath, setCurrentPath] = useState<string>("~");
   const [history, setHistory] = useState<CommandHistoryItem[]>([]);
   const [commandHistoryList, setCommandHistoryList] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
@@ -253,13 +255,120 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
         );
         break;
 
+      case "pwd":
+        output = (
+          <div className="text-xs font-mono text-zinc-300">
+            {currentPath === "~" ? "/home/rafi" : `/home/rafi/${currentPath.replace("~/", "")}`}
+          </div>
+        );
+        break;
+
+      case "ls":
+      case "dir":
+      case trimmed.startsWith("ls ") ? trimmed : "": {
+        if (currentPath === "~") {
+          output = (
+            <div className="text-xs font-mono grid grid-cols-2 sm:grid-cols-4 gap-2 py-1 select-text">
+              <span className="text-blue-400 font-bold flex items-center gap-1">📁 projects/</span>
+              <span className="text-blue-400 font-bold flex items-center gap-1">📁 skills/</span>
+              <span className="text-blue-400 font-bold flex items-center gap-1">📁 credentials/</span>
+              <span className="text-blue-400 font-bold flex items-center gap-1">📁 experience/</span>
+              <span className="text-emerald-400 font-semibold flex items-center gap-1">⚡ contact.sh*</span>
+              <span className="text-amber-300 flex items-center gap-1">📄 resume.pdf</span>
+              <span className="text-zinc-300 flex items-center gap-1">📝 bio.txt</span>
+            </div>
+          );
+        } else if (currentPath === "~/projects") {
+          output = (
+            <div className="text-xs font-mono flex flex-wrap gap-4 py-1 text-emerald-400">
+              <span>fleet-management/</span>
+              <span>chemical-blending/</span>
+              <span>pre-trip-inspection/</span>
+              <span>README.md</span>
+            </div>
+          );
+        } else if (currentPath === "~/skills") {
+          output = (
+            <div className="text-xs font-mono flex flex-wrap gap-4 py-1 text-cyan-400">
+              <span>backend-stack.json</span>
+              <span>database-pipelines.yaml</span>
+              <span>cloud-devops.env</span>
+            </div>
+          );
+        } else {
+          output = (
+            <div className="text-xs font-mono text-zinc-400">
+              <span>total 2</span>
+              <div className="text-zinc-300">README.txt</div>
+            </div>
+          );
+        }
+        break;
+      }
+
+      case "cd":
+      case trimmed.startsWith("cd ") ? trimmed : "": {
+        const parts = trimmed.split(" ").filter(Boolean);
+        const target = parts[1] || "~";
+
+        if (target === ".." || target === "~" || target === "/") {
+          setCurrentPath("~");
+          output = null;
+        } else if (target === "projects" || target === "projects/") {
+          setCurrentPath("~/projects");
+          if (onExploreProjects) onExploreProjects();
+          output = <div className="text-xs font-mono text-emerald-400">Changed directory to ~/projects. Launching Nautilus...</div>;
+        } else if (target === "skills" || target === "skills/" || target === "toolbox") {
+          setCurrentPath("~/skills");
+          if (onOpenToolbox) onOpenToolbox();
+          output = <div className="text-xs font-mono text-emerald-400">Changed directory to ~/skills. Launching Toolbox...</div>;
+        } else if (target === "credentials" || target === "credentials/") {
+          setCurrentPath("~/credentials");
+          output = <div className="text-xs font-mono text-emerald-400">Changed directory to ~/credentials.</div>;
+        } else if (target === "experience" || target === "experience/") {
+          setCurrentPath("~/experience");
+          if (onOpenExperience) onOpenExperience();
+          output = <div className="text-xs font-mono text-emerald-400">Changed directory to ~/experience. Launching System Logs...</div>;
+        } else {
+          output = <div className="text-xs font-mono text-red-400">cd: no such file or directory: {target}</div>;
+        }
+        break;
+      }
+
+      case trimmed.startsWith("cat ") ? trimmed : "": {
+        const fileTarget = trimmed.replace("cat ", "").trim();
+        if (fileTarget === "bio.txt") {
+          output = (
+            <div className="text-xs font-mono text-zinc-300 space-y-1.5 p-2 bg-black/40 rounded border border-white/5">
+              <div className="text-emerald-400 font-bold">Rafida Aziz — Full-Stack Engineer & System Architect</div>
+              <p>Based in Malang, Indonesia. 3+ years production experience building high-throughput logistics data pipelines, NestJS microservices, Kafka stream synchronizers, and modern React/Remix user interfaces.</p>
+              <div className="text-zinc-500">Contact: dev.rafidaaziz@gmail.com | rafi@nexatriv.com</div>
+            </div>
+          );
+        } else if (fileTarget === "resume.pdf" || fileTarget === "cv.pdf") {
+          window.open("/cv/CV_Rafida%20Aziz.pdf", "_blank");
+          output = <div className="text-xs font-mono text-emerald-400">Opening CV_Rafida Aziz.pdf in new tab...</div>;
+        } else if (fileTarget === "contact.sh") {
+          if (onOpenContact) onOpenContact();
+          output = (
+            <div className="text-xs font-mono text-emerald-400">
+              <div>#!/bin/bash</div>
+              <div># Executing Thunderbird SMTP dispatch daemon...</div>
+            </div>
+          );
+        } else {
+          output = <div className="text-xs font-mono text-red-400">cat: {fileTarget}: No such file or directory</div>;
+        }
+        break;
+      }
+
       default:
         isAICommand = true;
         break;
     }
 
     if (!isAICommand) {
-      setHistory((prev) => [...prev, { command: cmd, output }]);
+      setHistory((prev) => [...prev, { command: cmd, path: currentPath, output }]);
       setInputVal("");
       return;
     }
@@ -314,9 +423,19 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
     }
   };
 
-    const AVAILABLE_COMMANDS = [
+      const AVAILABLE_COMMANDS = [
     "help",
     "whoami",
+    "pwd",
+    "ls",
+    "cd projects",
+    "cd skills",
+    "cd credentials",
+    "cd experience",
+    "cd ..",
+    "cat bio.txt",
+    "cat resume.pdf",
+    "cat contact.sh",
     "projects",
     "skills",
     "experience",
@@ -589,7 +708,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
                     <div className="flex items-center gap-2 text-xs text-zinc-400">
                       <span className="text-[#38B44A]">rafi@nexatriv</span>
                       <span className="text-zinc-500">:</span>
-                      <span className="text-[#E95420]">~/works</span>
+                      <span className="text-[#E95420]">{item.path || "~"}</span>
                       <span className="text-zinc-400">$</span>
                       <span className="text-white font-bold">{item.command}</span>
                     </div>
@@ -603,7 +722,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
             <div className="mt-4 pt-3 border-t border-white/5 flex items-center gap-2 font-mono text-xs sm:text-sm">
               <span className="text-[#38B44A] shrink-0 font-semibold">rafi@nexatriv</span>
               <span className="text-zinc-500 shrink-0">:</span>
-              <span className="text-[#E95420] shrink-0 font-semibold">~/works</span>
+              <span className="text-[#E95420] shrink-0 font-semibold">{currentPath}</span>
               <span className="text-zinc-400 shrink-0">$</span>
               <div className="relative flex-1 flex items-center">
                 <input

@@ -12,7 +12,10 @@ const HELP_LINES = [
   { cmd: "neofetch", desc: "Print Ubuntu ASCII system hardware info" },
   { cmd: "theme <name>", desc: "Switch theme (ubuntu | matrix | cyberpunk)" },
   { cmd: "matrix", desc: "Digital rain canvas screen (cmatrix)" },
-  { cmd: "contact", desc: "Open Thunderbird Mailer / contact info" },
+  { cmd: "ls", desc: "List files and directories in virtual FS" },
+  { cmd: "cd <dir>", desc: "Change working directory (e.g., cd projects)" },
+  { cmd: "cat <file>", desc: "Print contents of file (e.g., cat bio.txt)" },
+  { cmd: "pwd", desc: "Print current working directory path" },
   { cmd: "clear", desc: "Clear terminal command output" },
   { isFooter: true, text: "Note: Any other command will be processed by Rafida-AI (Gemini)" },
 ];
