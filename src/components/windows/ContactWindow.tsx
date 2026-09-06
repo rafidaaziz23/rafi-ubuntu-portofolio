@@ -37,6 +37,7 @@ export function ContactWindow({
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isMaximized = controlledMaximized ?? internalMaximized;
   const isVisible = isOpen && !internalClosed;
@@ -57,20 +58,50 @@ export function ContactWindow({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formState.name || !formState.email || !formState.message) return;
     
     setIsSubmitting(true);
-    // Simulate network request
-    setTimeout(() => {
+    setErrorMessage("");
+
+    try {
+      const accessKey =
+        process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ||
+        "f32866a4-472e-4022-ac56-40900f3f2944";
+
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formState.name,
+          email: formState.email,
+          message: formState.message,
+          subject: `New Portfolio Note from ${formState.name}`,
+          from_name: "Ubuntu Portfolio Mailer",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setIsSent(true);
+        setTimeout(() => {
+          setIsSent(false);
+          setFormState({ name: "", email: "", message: "" });
+        }, 4000);
+      } else {
+        setErrorMessage(data.message || "Failed to transmit message.");
+      }
+    } catch (err) {
+      setErrorMessage("Network error: Failed to connect to SMTP gateway.");
+    } finally {
       setIsSubmitting(false);
-      setIsSent(true);
-      setTimeout(() => {
-        setIsSent(false);
-        setFormState({ name: "", email: "", message: "" });
-      }, 3000);
-    }, 1500);
+    }
   };
 
   if (!isVisible) return null;
@@ -267,6 +298,12 @@ export function ContactWindow({
                 />
               </div>
               
+                            {errorMessage && (
+                <div className="p-2.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono">
+                  [ERR] {errorMessage}
+                </div>
+              )}
+
               {/* SUBMIT BUTTON */}
               <div className="flex items-center justify-between mt-auto pt-2">
                 <div className="text-[10px] text-zinc-500 flex items-center gap-1.5">
