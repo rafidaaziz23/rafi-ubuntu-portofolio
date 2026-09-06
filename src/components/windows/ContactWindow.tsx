@@ -130,7 +130,7 @@ export function ContactWindow({
           <div className="flex items-center gap-2 z-10">
             <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/40 border border-white/5 font-mono text-[10px] text-zinc-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>SMTP: rafida@universe</span>
+              <span>SMTP: rafi@nexatriv</span>
               <span className="text-emerald-400 font-semibold ml-1">CONNECTED</span>
             </div>
           </div>
@@ -142,7 +142,7 @@ export function ContactWindow({
           {/* Left Column - Contact Info */}
           <div className="w-full md:w-2/5 border-b md:border-b-0 md:border-r border-white/5 bg-[#18181A] p-6 sm:p-8 flex flex-col justify-center">
             <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3 tracking-tight">
-              Say Hello! <span className="animate-waving-hand inline-block origin-bottom-right">👋</span>
+              Say Hello!
             </h2>
             
             <p className="text-zinc-400 text-sm leading-relaxed mb-8">
@@ -207,7 +207,7 @@ export function ContactWindow({
               {/* SENDER_NAME */}
               <div className="group">
                 <label className="flex items-center gap-2 text-xs sm:text-sm text-zinc-400 mb-1.5">
-                  <span className="text-[#38B44A]">user@portfolio</span>
+                  <span className="text-[#38B44A]">guest@nexatriv</span>
                   <span className="text-zinc-500">:</span>
                   <span className="text-[#E95420]">~$</span>
                   <span className="text-white">export SENDER_NAME=</span>
@@ -226,7 +226,7 @@ export function ContactWindow({
               {/* SENDER_EMAIL */}
               <div className="group">
                 <label className="flex items-center gap-2 text-xs sm:text-sm text-zinc-400 mb-1.5">
-                  <span className="text-[#38B44A]">user@portfolio</span>
+                  <span className="text-[#38B44A]">guest@nexatriv</span>
                   <span className="text-zinc-500">:</span>
                   <span className="text-[#E95420]">~$</span>
                   <span className="text-white">export SENDER_EMAIL=</span>
@@ -245,7 +245,7 @@ export function ContactWindow({
               {/* MESSAGE TEXTAREA */}
               <div className="group flex-1 flex flex-col min-h-[150px]">
                 <label className="flex items-center gap-2 text-xs sm:text-sm text-zinc-400 mb-1.5">
-                  <span className="text-[#38B44A]">user@portfolio</span>
+                  <span className="text-[#38B44A]">guest@nexatriv</span>
                   <span className="text-zinc-500">:</span>
                   <span className="text-[#E95420]">~$</span>
                   <span className="text-white">cat &lt;&lt; 'EOF' &gt; message.txt</span>

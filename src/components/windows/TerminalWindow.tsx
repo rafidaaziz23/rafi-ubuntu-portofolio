@@ -54,7 +54,7 @@ export function TerminalWindow({
   const [internalMaximized, setInternalMaximized] = useState(false);
   const [inputVal, setInputVal] = useState("");
   const [history, setHistory] = useState<CommandHistoryItem[]>([]);
-  const terminalBottomRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isMaximized = controlledMaximized ?? internalMaximized;
@@ -187,7 +187,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
             .-/+oossssoo+/-.`}
             </pre>
             <div className="space-y-1 text-zinc-300 text-xs flex flex-col justify-center">
-              <div className="text-[#E95420] font-bold">rafida@universe</div>
+              <div className="text-[#E95420] font-bold">rafi@nexatriv</div>
               <div className="text-zinc-600">----------------------</div>
               <div><span className="text-zinc-500">OS:</span> Ubuntu 24.04 LTS x86_64</div>
               <div><span className="text-zinc-500">Host:</span> Portfolio Hypervisor v2.4</div>
@@ -239,8 +239,11 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
   };
 
   useEffect(() => {
-    if (history.length > 0) {
-      terminalBottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (history.length > 0 && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "smooth"
+      });
     }
   }, [history]);
 
@@ -306,7 +309,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
           <div className="absolute inset-x-0 flex items-center justify-center pointer-events-none px-12">
             <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs text-zinc-300">
               <TerminalIcon className="w-3.5 h-3.5 text-[#E95420]" />
-              <span className="font-semibold text-white/95">rafida@universe:~ (zsh)</span>
+              <span className="font-semibold text-white/95">rafi@nexatriv:~ (zsh)</span>
             </div>
           </div>
 
@@ -323,10 +326,10 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
         </header>
 
         {/* Content Body */}
-        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 overflow-y-auto max-h-[700px] custom-scrollbar bg-[#121214]">
+        <div ref={scrollContainerRef} className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 overflow-y-auto max-h-[700px] custom-scrollbar bg-[#121214]">
           {/* Terminal Command: whoami */}
           <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-zinc-300 mb-4 select-text">
-              <span className="text-[#38B44A] font-semibold">rafida@universe</span>
+              <span className="text-[#38B44A] font-semibold">rafi@nexatriv</span>
               <span className="text-zinc-500">:</span>
               <span className="text-[#E95420] font-semibold">~</span>
               <span className="text-zinc-400">$</span>
@@ -450,7 +453,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
                 {history.map((item, idx) => (
                   <div key={idx} className="space-y-1.5 font-mono select-text">
                     <div className="flex items-center gap-2 text-xs text-zinc-400">
-                      <span className="text-[#38B44A]">rafida@universe</span>
+                      <span className="text-[#38B44A]">rafi@nexatriv</span>
                       <span className="text-zinc-500">:</span>
                       <span className="text-[#E95420]">~/works</span>
                       <span className="text-zinc-400">$</span>
@@ -464,7 +467,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
 
             {/* Interactive Command Prompt Line */}
             <div className="mt-4 pt-3 border-t border-white/5 flex items-center gap-2 font-mono text-xs sm:text-sm">
-              <span className="text-[#38B44A] shrink-0 font-semibold">rafida@universe</span>
+              <span className="text-[#38B44A] shrink-0 font-semibold">rafi@nexatriv</span>
               <span className="text-zinc-500 shrink-0">:</span>
               <span className="text-[#E95420] shrink-0 font-semibold">~/works</span>
               <span className="text-zinc-400 shrink-0">$</span>
@@ -488,7 +491,6 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
               </div>
             </div>
 
-            <div ref={terminalBottomRef} />
           </div>
       </motion.div>
     </AnimatePresence>
