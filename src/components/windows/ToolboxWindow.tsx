@@ -173,10 +173,10 @@ export function ToolboxWindow({
         }}
         exit={{ opacity: 0, scale: 0.94, y: 20 }}
         transition={{ duration: 0.22, ease: "easeOut" }}
-        className={`w-full font-sans select-none ${
+        className={`w-full font-sans select-none flex flex-col ${
           isMaximized
-            ? "fixed inset-0 z-50 rounded-none max-w-none h-screen flex flex-col"
-            : "max-w-6xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10"
+            ? "fixed inset-0 z-50 rounded-none max-w-none h-screen"
+            : "max-w-6xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10 max-h-[85vh] md:max-h-[750px]"
         } bg-[#1E1E1E] text-zinc-200 overflow-hidden border border-white/10 backdrop-blur-md ${className}`}
       >
         {/* 1. Ubuntu Window Header Bar */}
@@ -319,7 +319,7 @@ export function ToolboxWindow({
             </div>
 
             {/* 3. Grid Container (High-Density Cards) */}
-            <div className="flex-1 p-4 sm:p-6 overflow-y-auto max-h-[640px] custom-scrollbar bg-gradient-to-b from-[#1E1E1E] via-[#1A1A1A] to-[#161616]">
+            <div className="flex-1 p-4 sm:p-6 overflow-y-auto custom-scrollbar bg-gradient-to-b from-[#1E1E1E] via-[#1A1A1A] to-[#161616]">
               {filteredSkills.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
                   <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-3">

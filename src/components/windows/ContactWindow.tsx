@@ -85,7 +85,7 @@ export function ContactWindow({
         className={`w-full font-sans select-none flex flex-col ${
           isMaximized
             ? "fixed inset-0 z-50 rounded-none max-w-none h-screen"
-            : "max-w-5xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10 h-[600px]"
+            : "max-w-5xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10 h-[80vh] md:h-[600px] max-h-[85vh]"
         } bg-[#1E1E1E] text-zinc-200 overflow-hidden ${className}`}
       >
         {/* Header - Thunderbird Mailer Style */}
@@ -133,7 +133,7 @@ export function ContactWindow({
         </header>
 
         {/* Content Body - 2 Columns */}
-        <div className="flex flex-col md:flex-row flex-1 min-h-0 bg-[#121212]">
+        <div className="flex flex-col md:flex-row flex-1 min-h-0 bg-[#121212] overflow-y-auto md:overflow-hidden">
           
           {/* Left Column - Contact Info */}
           <div className="w-full md:w-2/5 border-b md:border-b-0 md:border-r border-white/5 bg-[#18181A] p-6 sm:p-8 flex flex-col justify-center">
@@ -146,6 +146,28 @@ export function ContactWindow({
             </p>
             
             <div className="space-y-3">
+              <a 
+                href="mailto:dev.rafidaaziz@gmail.com" 
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-[#E95420]/20 border border-white/5 hover:border-[#E95420]/50 transition-all group"
+              >
+                <Mail className="w-5 h-5 text-[#E95420] group-hover:scale-110 transition-transform" />
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-white group-hover:text-[#E95420] transition-colors">Email (Primary)</span>
+                  <span className="text-[11px] text-zinc-500 font-mono">dev.rafidaaziz@gmail.com</span>
+                </div>
+              </a>
+
+              <a 
+                href="mailto:rafi@nexatriv.com" 
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-emerald-500/20 border border-white/5 hover:border-emerald-500/50 transition-all group"
+              >
+                <Mail className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">Email (Business)</span>
+                  <span className="text-[11px] text-zinc-500 font-mono">rafi@nexatriv.com</span>
+                </div>
+              </a>
+
               <a 
                 href="https://linkedin.com/in/rafida-aziz" 
                 target="_blank" 
@@ -160,7 +182,7 @@ export function ContactWindow({
               </a>
               
               <a 
-                href="https://github.com/rafida-core" 
+                href="https://github.com/rafidaaziz23" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group"
@@ -168,23 +190,7 @@ export function ContactWindow({
                 <Code className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
                 <div className="flex flex-col">
                   <span className="text-sm font-semibold text-white">GitHub</span>
-                  <span className="text-[11px] text-zinc-500 font-mono">@rafida-core</span>
-                </div>
-              </a>
-              
-              <a 
-                href="https://wa.me/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-[#25D366]/20 border border-white/5 hover:border-[#25D366]/50 transition-all group relative overflow-hidden"
-              >
-                <MessageCircle className="w-5 h-5 text-[#25D366] group-hover:scale-110 transition-transform" />
-                <div className="flex flex-col">
-                  <span className="text-sm font-semibold text-white group-hover:text-[#25D366] transition-colors">Direct WhatsApp</span>
-                  <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1.5 mt-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Online
-                  </span>
+                  <span className="text-[11px] text-zinc-500 font-mono">rafidaaziz23</span>
                 </div>
               </a>
             </div>

@@ -302,7 +302,7 @@ export default function Home() {
           {isTerminalOpen && (
             <div
               onClick={() => setFocusedWindow("terminal")}
-              className={`w-full max-w-4xl transition-all duration-150 ${
+              className={`w-full max-w-5xl transition-all duration-150 ${
                 focusedWindow === "terminal"
                   ? "relative z-30 scale-100"
                   : "absolute z-10 scale-[0.98] opacity-75 pointer-events-auto"

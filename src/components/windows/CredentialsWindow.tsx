@@ -83,7 +83,7 @@ export function CredentialsWindow({
         className={`w-full font-sans select-none flex flex-col ${
           isMaximized
             ? "fixed inset-0 z-50 rounded-none max-w-none h-screen"
-            : "max-w-5xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10 h-[650px]"
+            : "max-w-5xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10 h-[80vh] md:h-[650px] max-h-[85vh]"
         } bg-[#1E1E1E] text-zinc-200 overflow-hidden ${className}`}
       >
         {/* Header - Software Center Style */}

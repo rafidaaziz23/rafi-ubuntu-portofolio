@@ -273,10 +273,10 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
         }}
         exit={{ opacity: 0, scale: 0.94, y: 20 }}
         transition={{ duration: 0.22, ease: "easeOut" }}
-        className={`w-full font-sans select-none ${
+        className={`w-full font-sans select-none flex flex-col ${
           isMaximized
-            ? "fixed inset-0 z-50 rounded-none max-w-none h-screen flex flex-col"
-            : "max-w-5xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10"
+            ? "fixed inset-0 z-50 rounded-none max-w-none h-screen"
+            : "max-w-5xl mx-auto rounded-xl shadow-2xl shadow-black/85 ring-1 ring-white/10 max-h-[85vh] md:max-h-[700px]"
         } bg-[#18181A] text-zinc-200 overflow-hidden border border-white/10 backdrop-blur-md ${className}`}
       >
         {/* 1. Terminal Window Header Bar */}
@@ -326,7 +326,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
         </header>
 
         {/* Content Body */}
-        <div ref={scrollContainerRef} className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 overflow-y-auto max-h-[700px] custom-scrollbar bg-[#121214]">
+        <div ref={scrollContainerRef} className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 overflow-y-auto custom-scrollbar bg-[#121214]">
           {/* Terminal Command: whoami */}
           <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-zinc-300 mb-4 select-text">
               <span className="text-[#38B44A] font-semibold">rafi@nexatriv</span>

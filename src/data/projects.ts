@@ -111,7 +111,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
     ],
     role: 'Core Backend & Frontend Developer',
     clientOrContext: 'Mining & Mineral Logistics Operator',
-    year: '2023',
+    year: '2023 - 2025',
     highlights: [
       'Optimized database queries for massive shipment ledger datasets',
       'Built responsive UI dashboards with real-time sync',
@@ -150,7 +150,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
     ],
     role: 'Full-Stack Developer',
     clientOrContext: 'Supply Chain & Equipment Services',
-    year: '2024',
+    year: '2023 - 2024',
     highlights: [
       'Streamlined daily inventory auditing and maintenance turnaround times',
     ],
