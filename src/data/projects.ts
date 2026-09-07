@@ -155,4 +155,62 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Streamlined daily inventory auditing and maintenance turnaround times',
     ],
   },
+  {
+    id: 'peduli-amt',
+    title: 'Peduli AMT — Driver Monitoring App',
+    category: 'logistics',
+    categoryLabel: 'Mobile & Fleet',
+    tagline: 'Mobile-First Driver Monitoring & Performance Tracking for Fuel Transport AMT',
+    description:
+      'Internal mobile application for PT Elnusa Petrofin to monitor Awak Mobil Tangki (AMT) drivers in real-time. The app covers driver login, daily shipment history, performance analytics, point/reward tracking, and driver biodata — all in a mobile-first interface designed for field operations.',
+    thumbnail: '/projects/pamt/pamt-thumbnail.png',
+    screenshots: [
+      {
+        src: '/projects/pamt/Login Mobile (Sensored) - Peduli AMT.png',
+        caption: 'Login Screen: Company-branded authentication with myElfin ID & secure password entry',
+      },
+      {
+        src: '/projects/pamt/Home Mobile (Sensored) - Peduli AMT.png',
+        caption: 'Home Dashboard: Driver profile, live clock, point card, last shipment summary & daily performance stats',
+      },
+      {
+        src: '/projects/pamt/Riwayat Perjalanan Mobile (Sensored) - Peduli AMT.png',
+        caption: 'Riwayat Perjalanan: Weekly bar chart (AMT role stacking), paginated shipment history cards',
+      },
+      {
+        src: '/projects/pamt/Riwayat Kinerja Mobile (Sensored) - Peduli AMT.png',
+        caption: 'Riwayat Kinerja: Date-range filter with aggregated stats — jam kerja, KM, tonase, ritase & SPBU',
+      },
+      {
+        src: '/projects/pamt/Profil Driver Mobile (Sensored) - Peduli AMT.png',
+        caption: 'Profil Driver: FIT/UNFIT status badge, biodata rows with icons, SIM B2 & MCU expiry tracking',
+      },
+      {
+        src: '/projects/pamt/Riwayat Point Mobile (Sensored) - Peduli AMT.png',
+        caption: 'Riwayat Point: Point summary card, violation history list, Awards Goals tab & pagination',
+      },
+    ],
+    techStack: [
+      'Flutter',
+      'Dart',
+      'REST APIs',
+      'NestJS',
+      'PostgreSQL',
+      'Tailwind CSS',
+    ],
+    features: [
+      'Real-time driver profile & FIT/UNFIT health status display (MCU tracking)',
+      'Weekly shipment history with stacked bar chart (Chart.js style, AMT role breakdown)',
+      'Performance analytics with date-range filter — jam kerja, KM tempuh, tonase, ritase',
+      'Point & reward system with violation history, deduction log, and Awards Goals',
+      'Driver biodata page with SIM B2 & MCU expiry tracking',
+    ],
+    role: 'Full-Stack Developer (Mobile & Backend)',
+    clientOrContext: 'PT Elnusa Petrofin / Pertamina Patra Niaga Group',
+    year: '2023 - 2024',
+    highlights: [
+      'Designed & implemented mobile-first UI reconstructed via Google Stitch from production source',
+      'Integrated driver monitoring pipeline with point deduction engine and MCU/SIM compliance checks',
+    ],
+  },
 ];

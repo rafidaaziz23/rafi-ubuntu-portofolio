@@ -397,13 +397,57 @@ export function ProjectsWindow({
                     {/* Screenshot Viewer & Strip */}
                     <div className="flex flex-col gap-2 rounded-xl bg-[#141416] p-3 border border-white/10">
                       {/* Main Featured Screenshot */}
-                      <div className="relative aspect-video w-full rounded-lg overflow-hidden border border-white/10 bg-black/40 group/shot">
+                      <div className="relative aspect-video w-full rounded-lg overflow-hidden border border-white/10 bg-black/60 group/shot flex items-center justify-center">
+                        {/* Ambient Blurred Background (Adapts automatically to screenshot palette) */}
                         <Image
                           src={activeProject.screenshots[activeScreenshotIdx]?.src || activeProject.thumbnail}
-                          alt={activeProject.title}
+                          alt=""
                           fill
-                          className="object-cover transition-transform duration-300 group-hover/shot:scale-[1.02]"
+                          className="object-cover blur-2xl opacity-40 scale-125 pointer-events-none"
                         />
+                        <div className="absolute inset-0 bg-black/25 backdrop-blur-[2px] pointer-events-none" />
+
+                        {/* Foreground Centered Sharp Screenshot (Preserves exact mobile/desktop ratio) */}
+                        <div className="relative w-full h-full p-2 z-10 flex items-center justify-center">
+                          <Image
+                            src={activeProject.screenshots[activeScreenshotIdx]?.src || activeProject.thumbnail}
+                            alt={activeProject.title}
+                            fill
+                            className="object-contain drop-shadow-[0_12px_30px_rgba(0,0,0,0.85)] transition-transform duration-300 group-hover/shot:scale-[1.01]"
+                          />
+                        </div>
+
+                        {/* Left / Right Carousel Navigation Arrows */}
+                        {activeProject.screenshots.length > 1 && (
+                          <>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveScreenshotIdx((prev) =>
+                                  prev === 0 ? activeProject.screenshots.length - 1 : prev - 1
+                                );
+                              }}
+                              title="Previous Screenshot"
+                              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/75 hover:bg-[#E95420] text-white border border-white/20 transition-all shadow-xl opacity-75 hover:opacity-100 hover:scale-110 active:scale-95"
+                            >
+                              <ChevronLeft className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveScreenshotIdx((prev) =>
+                                  prev === activeProject.screenshots.length - 1 ? 0 : prev + 1
+                                );
+                              }}
+                              title="Next Screenshot"
+                              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/75 hover:bg-[#E95420] text-white border border-white/20 transition-all shadow-xl opacity-75 hover:opacity-100 hover:scale-110 active:scale-95"
+                            >
+                              <ChevronRight className="w-4 h-4" />
+                            </button>
+                          </>
+                        )}
+
+                        {/* Full Size Preview Button */}
                         <button
                           onClick={() =>
                             setFullscreenImage(
@@ -411,38 +455,48 @@ export function ProjectsWindow({
                             )
                           }
                           title="View Full Size"
-                          className="absolute bottom-3 right-3 p-2 rounded-lg bg-black/70 text-white hover:bg-[#E95420] border border-white/20 transition-colors shadow-lg"
+                          className="absolute bottom-3 right-3 z-20 p-2 rounded-lg bg-black/75 text-white hover:bg-[#E95420] border border-white/20 transition-colors shadow-lg backdrop-blur-sm"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
                       </div>
 
                       {/* Screenshot Caption */}
-                      <div className="text-xs font-mono text-zinc-400 px-1">
-                        <span className="text-[#E95420] font-semibold">
-                          [Screenshot {activeScreenshotIdx + 1}/{activeProject.screenshots.length}]:{" "}
-                        </span>
-                        {activeProject.screenshots[activeScreenshotIdx]?.caption}
+                      <div className="text-xs font-mono text-zinc-400 px-1 flex items-center justify-between">
+                        <div>
+                          <span className="text-[#E95420] font-semibold">
+                            [Screenshot {activeScreenshotIdx + 1}/{activeProject.screenshots.length}]:{" "}
+                          </span>
+                          <span>{activeProject.screenshots[activeScreenshotIdx]?.caption}</span>
+                        </div>
                       </div>
 
                       {/* Thumbnails Carousel Strip */}
                       {activeProject.screenshots.length > 1 && (
-                        <div className="flex items-center gap-2 overflow-x-auto pt-1">
+                        <div className="flex items-center gap-2 overflow-x-auto pt-1 pb-1">
                           {activeProject.screenshots.map((shot, idx) => (
                             <button
                               key={shot.src}
                               onClick={() => setActiveScreenshotIdx(idx)}
-                              className={`relative w-24 h-16 rounded-md overflow-hidden shrink-0 border-2 transition-all ${
+                              className={`relative w-20 h-14 rounded-md overflow-hidden shrink-0 border-2 transition-all bg-black/50 ${
                                 idx === activeScreenshotIdx
-                                  ? "border-[#E95420] ring-2 ring-[#E95420]/40"
+                                  ? "border-[#E95420] ring-2 ring-[#E95420]/40 scale-105"
                                   : "border-white/10 opacity-60 hover:opacity-100"
                               }`}
                             >
+                              {/* Background ambient blur */}
+                              <Image
+                                src={shot.src}
+                                alt=""
+                                fill
+                                className="object-cover blur-sm opacity-30 scale-125 pointer-events-none"
+                              />
+                              {/* Sharp contained thumbnail */}
                               <Image
                                 src={shot.src}
                                 alt={`Thumbnail ${idx + 1}`}
                                 fill
-                                className="object-cover"
+                                className="object-contain p-0.5 z-10"
                               />
                             </button>
                           ))}
@@ -561,16 +615,29 @@ export function ProjectsWindow({
                         }}
                         className="group cursor-pointer rounded-xl bg-[#242427]/80 hover:bg-[#2A2A2E] border border-white/10 hover:border-[#E95420]/60 hover:shadow-[0_0_20px_rgba(233,84,32,0.18)] transition-all duration-200 overflow-hidden flex flex-col"
                       >
-                        {/* Thumbnail image */}
-                        <div className="relative aspect-[16/10] w-full bg-black/50 overflow-hidden border-b border-white/10">
+                        {/* Thumbnail image with ambient backdrop */}
+                        <div className="relative aspect-[16/10] w-full bg-black/60 overflow-hidden border-b border-white/10 flex items-center justify-center">
+                          {/* Ambient Blurred Background */}
                           <Image
                             src={project.thumbnail}
-                            alt={project.title}
+                            alt=""
                             fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="object-cover blur-xl opacity-40 scale-125 pointer-events-none"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
-                          <div className="absolute top-2.5 left-2.5">
+                          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+
+                          {/* Sharp Contained Image */}
+                          <div className="relative w-full h-full p-2 z-10 flex items-center justify-center">
+                            <Image
+                              src={project.thumbnail}
+                              alt={project.title}
+                              fill
+                              className="object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity pointer-events-none z-20" />
+                          <div className="absolute top-2.5 left-2.5 z-20">
                             <span className="px-2 py-0.5 rounded font-mono text-[10px] bg-[#E95420] text-white font-semibold shadow-md">
                               {project.categoryLabel}
                             </span>
