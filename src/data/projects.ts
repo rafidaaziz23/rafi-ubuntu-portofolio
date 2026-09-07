@@ -69,7 +69,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
   },
   {
     id: 'mms-mining',
-    title: 'MMS - Maintenance Management System',
+    title: 'Maintenance Management System (MMS)',
     category: 'enterprise',
     categoryLabel: 'Mining & Materials',
     tagline: 'Heavy Material Logistics, Maintenance Tracking & Inventory Management',
@@ -102,6 +102,8 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Prisma ORM',
       'Redis',
       'Tailwind CSS',
+      'PDFKit',
+      'ExcelJS',
     ],
     features: [
       'Multi-level approval workflow for material production verification',
@@ -119,7 +121,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
   },
   {
     id: 'bluefin-erp',
-    title: 'Bluefin Chemical Blending Management',
+    title: 'Bluefin - Chemical Blending Management',
     category: 'operations',
     categoryLabel: 'SAP Operations',
     tagline: 'Operational Scheduling, Inventory Management & SAP',
@@ -157,7 +159,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
   },
   {
     id: 'peduli-amt',
-    title: 'Peduli AMT — Driver Monitoring App',
+    title: 'Peduli AMT - Driver Monitoring App',
     category: 'logistics',
     categoryLabel: 'Mobile & Fleet',
     tagline: 'Mobile-First Driver Monitoring & Performance Tracking for Fuel Transport AMT',

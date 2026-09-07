@@ -131,7 +131,7 @@ export function TerminalWindow({
           <div className="text-xs font-mono text-zinc-300 space-y-1">
             <div className="text-white font-semibold">Rafida Aziz — Software Engineer</div>
             <div className="text-zinc-400">Location: Remote / Global | Experience: 3+ Years Prod</div>
-            <div className="text-emerald-400">Status: Open for High-Throughput Engineering Projects</div>
+            <div className="text-emerald-400">Status: Open for Full-Stack Engineering Projects</div>
           </div>
         );
         break;
@@ -641,11 +641,15 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
                     </a>
 
                     <button
-                      onClick={onExploreProjects}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onExploreProjects?.();
+                      }}
+                      onPointerDown={(e) => e.stopPropagation()}
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-200 hover:text-white border border-white/10 font-medium text-xs font-mono transition-all hover:scale-[1.02] active:scale-[0.98]"
                     >
                       <Rocket className="w-3.5 h-3.5 text-[#E95420]" />
-                      <span>Explore Recent Deployments</span>
+                      <span>Explore My Works</span>
                     </button>
                   </div>
                 </div>
@@ -683,7 +687,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
                   <span>Specialization</span>
                 </span>
                 <span className="text-sm font-semibold text-white mt-1 font-mono">
-                  High-Throughput IO
+                  Full-Stack Engineering
                 </span>
               </div>
 

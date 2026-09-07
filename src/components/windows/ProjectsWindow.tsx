@@ -306,7 +306,11 @@ export function ProjectsWindow({
               </div>
               <div className="flex flex-col gap-0.5">
                 <button
-                  onClick={onOpenToolbox}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenToolbox?.();
+                  }}
+                  onPointerDown={(e) => e.stopPropagation()}
                   className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-white/5 hover:text-zinc-200 transition-colors text-left"
                 >
                   <Layers className="w-3.5 h-3.5 text-[#E95420]" />
