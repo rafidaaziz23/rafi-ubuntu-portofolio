@@ -129,7 +129,7 @@ export function TerminalWindow({
       case "whoami":
         output = (
           <div className="text-xs font-mono text-zinc-300 space-y-1">
-            <div className="text-white font-semibold">Rafida Aziz — Full-Stack System Architect</div>
+            <div className="text-white font-semibold">Rafida Aziz — Software Engineer</div>
             <div className="text-zinc-400">Location: Remote / Global | Experience: 3+ Years Prod</div>
             <div className="text-emerald-400">Status: Open for High-Throughput Engineering Projects</div>
           </div>
@@ -620,7 +620,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso
                       Rafida Aziz
                     </h2>
                     <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-[#E95420]/20 text-[#E95420] border border-[#E95420]/40">
-                      Full-Stack System Architect
+                      Software Engineer
                     </span>
                   </div>
 

@@ -29,7 +29,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
     tagline: 'Enterprise Fleet & Shipment Management for Fuel Transport & Heavy Contracts',
     description:
       'High-throughput logistics platform managing end-to-end fuel tank fleet operations (Awak Mobil Tangki), real-time shipment dispatching, automated tariff interpolation, and contractual billing generation.',
-    thumbnail: '/projects/fleet-management/fleet-home-censored.png',
+    thumbnail: '/projects/fleet-management/00-thumbnail.png',
     screenshots: [
       {
         src: '/projects/fleet-management/fleet-home-censored.png',
@@ -60,8 +60,8 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Driver evaluation & mobilization audit log',
     ],
     role: 'Lead Full-Stack / Backend Engineer',
-    clientOrContext: 'Elnusa / Pertamina Patra Niaga Partner',
-    year: '2023 - 2024',
+    clientOrContext: 'Elnusa Petrofin / Pertamina Patra Niaga Group',
+    year: '2023 - 2025',
     highlights: [
       'Engineered event-driven pipeline handling high-throughput event processing',
       'Implemented robust contract pricing interpolation algorithms',
@@ -69,10 +69,10 @@ export const PROJECTS_DATA: ProjectItem[] = [
   },
   {
     id: 'mms-mining',
-    title: 'MMS - Mineral & Shipment System',
+    title: 'MMS - Maintenance Management System',
     category: 'enterprise',
     categoryLabel: 'Mining & Materials',
-    tagline: 'Heavy Material Logistics, Shipment Tracking & Dispatching Operations',
+    tagline: 'Heavy Material Logistics, Maintenance Tracking & Inventory Management',
     description:
       'Comprehensive material management and dispatch system tracking bulk material movements, barging shipments, MPR verification, and quality audit trails across mining operations.',
     thumbnail: '/projects/mms/mms-thumbnail.jpg',
@@ -119,13 +119,13 @@ export const PROJECTS_DATA: ProjectItem[] = [
   },
   {
     id: 'bluefin-erp',
-    title: 'Bluefin Operations & Inventory',
+    title: 'Bluefin Chemical Blending Management',
     category: 'operations',
-    categoryLabel: 'Enterprise Operations',
-    tagline: 'Operational Scheduling, Inventory Management & Logistics Hub',
+    categoryLabel: 'SAP Operations',
+    tagline: 'Operational Scheduling, Inventory Management & SAP',
     description:
       'Internal operations hub providing centralized stock ledger management, automated calendar dispatching, supplier coordination, and asset tracking.',
-    thumbnail: '/projects/bluefin/inventory.png',
+    thumbnail: '/projects/bluefin/bluefin-thumbnail.png',
     screenshots: [
       {
         src: '/projects/bluefin/inventory.png',
