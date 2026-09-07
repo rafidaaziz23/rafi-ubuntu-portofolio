@@ -161,47 +161,56 @@ export function CredentialsWindow({
               </div>
             </div>
 
-            {/* Grid Layout for Credentials */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Single Column Layout for Credentials */}
+            <div className="flex flex-col gap-3.5">
               {filteredCredentials.map((cred) => (
                 <div 
                   key={cred.id}
-                  className="bg-[#18181A] rounded-xl p-5 border border-white/5 shadow-sm hover:shadow-lg hover:border-white/10 transition-all flex gap-4 items-start group"
+                  className="bg-[#18181A] rounded-xl p-4 sm:p-5 border border-white/5 shadow-sm hover:shadow-lg hover:border-white/15 transition-all flex items-center justify-between gap-4 group"
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center shrink-0 shadow-inner group-hover:bg-[#E95420]/10 group-hover:border-[#E95420]/20 transition-colors">
-                    {getIcon(cred.icon)}
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-white text-base leading-tight mb-1 truncate">
-                      {cred.title}
-                    </h3>
-                    <p className="text-sm text-zinc-400 mb-2">{cred.issuer}</p>
+                  <div className="flex items-center gap-4 min-w-0 flex-1">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-black/40 border border-white/5 flex items-center justify-center shrink-0 shadow-inner group-hover:bg-[#E95420]/10 group-hover:border-[#E95420]/25 transition-colors">
+                      {getIcon(cred.icon)}
+                    </div>
                     
-                    <div className="flex flex-wrap items-center gap-2 mt-auto">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 text-[10px] font-medium border border-emerald-500/20">
-                        <CheckCircle className="w-3 h-3" />
-                        Verified
-                      </span>
-                      <span className="text-[11px] text-zinc-500 font-medium">
-                        {cred.date}
-                      </span>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-white text-sm sm:text-base leading-snug group-hover:text-[#E95420] transition-colors">
+                        {cred.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">{cred.issuer}</p>
+                      
+                      <div className="flex flex-wrap items-center gap-2 mt-2">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 text-[10px] font-medium border border-emerald-500/20 font-mono">
+                          <CheckCircle className="w-3 h-3" />
+                          Verified
+                        </span>
+                        <span className="text-[11px] text-zinc-500 font-mono">
+                          {cred.date}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  <a 
-                    href={cred.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg text-zinc-500 hover:text-[#E95420] hover:bg-white/5 transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
+                  {cred.link && cred.link !== "#" ? (
+                    <a 
+                      href={cred.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2.5 rounded-lg bg-white/5 hover:bg-[#E95420] text-zinc-400 hover:text-white border border-white/10 transition-colors shrink-0"
+                      title="View Certificate / Credential"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  ) : (
+                    <div className="px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-[10px] font-mono text-zinc-500 shrink-0 hidden sm:block">
+                      Official License
+                    </div>
+                  )}
                 </div>
               ))}
               
               {filteredCredentials.length === 0 && (
-                <div className="col-span-full py-12 text-center">
+                <div className="py-12 text-center">
                   <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3 border border-white/10">
                     <Search className="w-6 h-6 text-zinc-500" />
                   </div>

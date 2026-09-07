@@ -266,4 +266,102 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Implemented automated Cost per KM (CPK) metrics and multi-tier digital justification workflows',
     ],
   },
+  {
+    id: 'aimind-audit',
+    title: 'AI-MIND - Internal Audit System',
+    category: 'enterprise',
+    categoryLabel: 'Enterprise Audit',
+    tagline: 'Centralized Internal Audit Monitoring, Document Vault & Compliance Automation',
+    description:
+      'Enterprise web-based internal audit management platform developed during internship at PT Sekawan Media Informatika for a state-owned mining and minerals holding group. The application solves fragmented audit workflows by providing centralized real-time monitoring of Annual Audit Plans (PKAT), audit execution timelines, finding follow-ups, automated official reporting, and secure master document vaulting.',
+    thumbnail: '/projects/aimind/thumbnail-aimind.png',
+    screenshots: [
+      {
+        src: '/projects/aimind/2.png',
+        caption: 'Audit Command Center: Real-time PKAT monitoring & evaluation dashboard, achievement metrics, findings & auditor assignments',
+      },
+      {
+        src: '/projects/aimind/1.png',
+        caption: 'PKAT Planning Form: Multi-assignment creation, audit category classification, scheduling, and multi-format document attachment',
+      },
+      {
+        src: '/projects/aimind/3.png',
+        caption: 'Execution & Timeline Realization: Schedule deviation tracking, mass upload tools, Bank Data repository & activity audit logs',
+      },
+    ],
+    techStack: [
+      'PHP (CodeIgniter HMVC)',
+      'JavaScript',
+      'MySQL',
+      'Bootstrap / CSS3',
+      'ExcelJS / PHPSpreadsheet',
+      'REST APIs',
+      'Custom RBAC',
+    ],
+    features: [
+      'Centralized PKAT (Program Kerja Audit Tahunan) planning, review, and approval lifecycle',
+      'Bank Data Module: Comprehensive master document vault & evidence management for all audit activities',
+      'Automated audit report generator and seamless multi-format export/import (Excel & PDF)',
+      'Dynamic Role-Based Access Control (RBAC) with granular button-level and menu security permissions',
+      'Timeline realization tracking with schedule deviation indicators and full activity audit logging',
+    ],
+    role: 'Full-Stack Developer (Intern)',
+    clientOrContext: 'State-Owned Mining & Minerals Holding (via PT Sekawan Media Informatika)',
+    year: '2021',
+    highlights: [
+      'Handled end-to-end development of the Bank Data module including schema design, file handling, and UI',
+      'Engineered automated Excel/PDF export pipelines and batch import tools for large audit datasets',
+      'Implemented dynamic RBAC permission engine providing granular access control across audit roles',
+    ],
+  },
+  {
+    id: 'pretrip-inspection',
+    title: 'MMS Daily Checklist — Pre-Trip Safety Inspection',
+    category: 'logistics',
+    categoryLabel: 'Fleet Safety & Logistics',
+    tagline: 'Pre-Dispatch Safety Inspection, Automated GO/NO-GO Determination & GPS Telemetry',
+    description:
+      'Digital safety inspection platform developed for PT Elnusa Petrofin (Pertamina Group) to verify the roadworthiness and HSE compliance of Fuel Tank Trucks (Mobil Tangki BBM) before daily dispatch. The system digitizes paper checklists into an interactive mobile and web interface with real-time GPS telemetry validation, live webcam evidence capture, MinIO cloud storage, and automatic GO / NO-GO roadworthiness determination.',
+    thumbnail: '/projects/pretrip/pretrip-thumbnail.png',
+    screenshots: [
+      {
+        src: '/projects/pretrip/1.png',
+        caption: 'Operations Monitoring Dashboard: Real-time inspection logs, TBBM multi-depo filter, GO/NO-GO status badges & defect logs',
+      },
+      {
+        src: '/projects/pretrip/2.png',
+        caption: 'Digital Pre-Trip Form: Driver & fleet technical identity, odometer tracking, and mandatory physical evidence upload',
+      },
+      {
+        src: '/projects/pretrip/3.png',
+        caption: 'Critical Component Inspection & Decision: Automated roadworthiness assessment, mandatory safety checks & field notes',
+      },
+    ],
+    techStack: [
+      'Laravel 8',
+      'PHP 8',
+      'MySQL',
+      'Bootstrap 5',
+      'REST APIs',
+      'MinIO Storage',
+      'GPS Telemetry (SCU & TrackSynq)',
+      'WebcamJS API',
+    ],
+    features: [
+      'Digital Pre-Trip safety inspection forms (Daily, Weekly, Monthly) for fuel tank fleet operations',
+      'Automated GO / NO-GO roadworthiness determination based on critical safety compliance rules',
+      'Live camera snapshot integration via WebcamJS API for on-site driver and vehicle verification',
+      'Real-time GPS telemetry validation via SCU & TrackSynq APIs (24h ping health check)',
+      'Secure photo evidence vault integrated with internal MinIO Object Storage via REST API',
+      'Multi-tier review & approval workflow for Field Supervisors, Head Office (HO), and Super Admins',
+    ],
+    role: 'Full-Stack Developer',
+    clientOrContext: 'PT Elnusa Petrofin (Pertamina Group)',
+    year: '2023 - 2024',
+    highlights: [
+      'Replaced paper inspection logs with zero-paper real-time digital pre-trip verification',
+      'Integrated automated NO-GO decision engine preventing unfit vehicles from road dispatch',
+      'Connected live GPS telemetry checks and MinIO cloud object storage for tamper-proof evidence',
+    ],
+  },
 ];

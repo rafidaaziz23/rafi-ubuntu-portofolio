@@ -11,7 +11,7 @@ export const SKILLS_DATA: SkillItem[] = [
   // Backend
   { name: 'NestJS', category: 'backend', experience: '3+ Years Prod', appliedIn: ['Fleet Management', 'Tyre Management (TMS)', 'Chemical Blending'], tag: 'Core Backend' },
   { name: 'Node.js & Express.js', category: 'backend', appliedIn: ['High-throughput APIs'] },
-  { name: 'Laravel & CodeIgniter', category: 'backend', appliedIn: ['Unmul Budget', 'MIND ID Audit'] },
+  { name: 'Laravel & CodeIgniter', category: 'backend', appliedIn: ['Pre-Trip Inspection', 'Unmul Budget', 'AI-MIND Audit'] },
   { name: 'Spring Boot', category: 'backend', appliedIn: ['Fleet Management Contracts'] },
   { name: 'GraphQL & REST APIs', category: 'backend', tag: 'API Architecture' },
 
@@ -21,7 +21,7 @@ export const SKILLS_DATA: SkillItem[] = [
   { name: 'Elasticsearch', category: 'data', appliedIn: ['Driver Performance Indexing'] },
   { name: 'Redis', category: 'data', tag: 'Caching' },
   { name: 'Prisma ORM', category: 'data', appliedIn: ['Tyre Management (TMS)', 'Elnusa Core Services'] },
-  { name: 'MinIO & MySQL', category: 'data', tag: 'Storage' },
+  { name: 'MinIO & MySQL', category: 'data', appliedIn: ['Pre-Trip Inspection', 'Elnusa Fleet Media'], tag: 'Storage' },
 
   // Frontend & Mobile
   { name: 'React.js & Next.js', category: 'frontend', appliedIn: ['Chemical Blending', 'Elnusa'] },
