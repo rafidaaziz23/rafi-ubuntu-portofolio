@@ -9,23 +9,23 @@ export interface SkillItem {
 
 export const SKILLS_DATA: SkillItem[] = [
   // Backend
-  { name: 'NestJS', category: 'backend', experience: '3+ Years Prod', appliedIn: ['Fleet Management', 'Chemical Blending'], tag: 'Core Backend' },
+  { name: 'NestJS', category: 'backend', experience: '3+ Years Prod', appliedIn: ['Fleet Management', 'Tyre Management (TMS)', 'Chemical Blending'], tag: 'Core Backend' },
   { name: 'Node.js & Express.js', category: 'backend', appliedIn: ['High-throughput APIs'] },
   { name: 'Laravel & CodeIgniter', category: 'backend', appliedIn: ['Unmul Budget', 'MIND ID Audit'] },
   { name: 'Spring Boot', category: 'backend', appliedIn: ['Fleet Management Contracts'] },
   { name: 'GraphQL & REST APIs', category: 'backend', tag: 'API Architecture' },
 
   // Data & Streaming
-  { name: 'PostgreSQL', category: 'data', experience: 'Production', appliedIn: ['Fleet Management', 'Elnusa'] },
+  { name: 'PostgreSQL', category: 'data', experience: 'Production', appliedIn: ['Fleet Management', 'Tyre Management (TMS)', 'Elnusa'] },
   { name: 'Apache Kafka', category: 'data', appliedIn: ['Peduli Awak Mobil Tangki', 'Event Pipeline'] },
   { name: 'Elasticsearch', category: 'data', appliedIn: ['Driver Performance Indexing'] },
   { name: 'Redis', category: 'data', tag: 'Caching' },
-  { name: 'Prisma ORM', category: 'data', appliedIn: ['Elnusa Core Services'] },
+  { name: 'Prisma ORM', category: 'data', appliedIn: ['Tyre Management (TMS)', 'Elnusa Core Services'] },
   { name: 'MinIO & MySQL', category: 'data', tag: 'Storage' },
 
   // Frontend & Mobile
   { name: 'React.js & Next.js', category: 'frontend', appliedIn: ['Chemical Blending', 'Elnusa'] },
-  { name: 'Remix.js', category: 'frontend', appliedIn: ['Fleet Management', 'Peduli Awak'] },
+  { name: 'Remix.js', category: 'frontend', appliedIn: ['Fleet Management', 'Tyre Management (TMS)', 'Peduli Awak'] },
   { name: 'Tailwind CSS', category: 'frontend', tag: 'Styling' },
   { name: 'Flutter', category: 'frontend', tag: 'Mobile' },
 

@@ -254,7 +254,9 @@ export function ProjectsWindow({
                     <Folder className="w-3.5 h-3.5 text-amber-400" />
                     <span>Logistics & Fleet</span>
                   </div>
-                  <span className="text-[10px] font-mono text-zinc-500">1</span>
+                  <span className="text-[10px] font-mono text-zinc-500">
+                    {PROJECTS_DATA.filter((p) => p.category === "logistics").length}
+                  </span>
                 </button>
 
                 <button
@@ -272,7 +274,9 @@ export function ProjectsWindow({
                     <Folder className="w-3.5 h-3.5 text-blue-400" />
                     <span>Mining & Materials</span>
                   </div>
-                  <span className="text-[10px] font-mono text-zinc-500">1</span>
+                  <span className="text-[10px] font-mono text-zinc-500">
+                    {PROJECTS_DATA.filter((p) => p.category === "enterprise").length}
+                  </span>
                 </button>
 
                 <button
@@ -290,7 +294,9 @@ export function ProjectsWindow({
                     <Folder className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Operations Hub</span>
                   </div>
-                  <span className="text-[10px] font-mono text-zinc-500">1</span>
+                  <span className="text-[10px] font-mono text-zinc-500">
+                    {PROJECTS_DATA.filter((p) => p.category === "operations").length}
+                  </span>
                 </button>
               </div>
 

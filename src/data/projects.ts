@@ -213,4 +213,55 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Integrated driver monitoring pipeline with point deduction engine and MCU/SIM compliance checks',
     ],
   },
+  {
+    id: 'tms-elnusa',
+    title: 'Tyre Management System (TMS)',
+    category: 'operations',
+    categoryLabel: 'Fleet Operations',
+    tagline: 'Enterprise Tyre Lifecycle, Axle Position Tracking & Retreading Pipeline for Fuel Tankers',
+    description:
+      'Enterprise web platform developed for PT Elnusa Petrofin (Pertamina Group) to digitize, monitor, and optimize the complete end-to-end lifecycle of tyre assets across hundreds of Fuel Tank Trucks (Mobil Tangki BBM) nationwide. The system manages unique emboss serial registration, axle wheel positioning, odometer & GPS telemetry, periodic rotation, retreading (vulkanisir) workflow, multi-depo transfers, and scrap disposal/auction.',
+    thumbnail: '/projects/tms/tms-thumbnail.png',
+    screenshots: [
+      {
+        src: '/projects/tms/1.png',
+        caption: 'Executive Dashboard: Real-time fleet tyre health, tread depth indicators, cost-per-KM analytics & axle wheel inspection',
+      },
+      {
+        src: '/projects/tms/2.png',
+        caption: 'Master Inventory & Lifecycle: Unique serial emboss database, multi-depo stock filtering & retreading status tracking',
+      },
+      {
+        src: '/projects/tms/3.png',
+        caption: 'Tyre Installation & Axle Form: Digital SPK, wheel position assignment, odometer recording & justification approval workflow',
+      },
+    ],
+    techStack: [
+      'Remix.js',
+      'React 18',
+      'TypeScript',
+      'NestJS',
+      'PostgreSQL',
+      'Prisma ORM',
+      'Tailwind CSS',
+      'PDFKit',
+      'ExcelJS',
+    ],
+    features: [
+      'End-to-end tyre lifecycle tracking with unique emboss serial numbering per unit',
+      'Axle wheel position mapping & installation tracking for fuel tank trucks (6x4 rigid & trailers)',
+      'Periodic tread depth (RTD) & pressure assessment with mass technician upload',
+      'Retreading (vulkanisir) pipeline with digital MPR, vendor PO, and lifespan reset management',
+      'Multi-TBBM inventory transfer with real-time digital stock card ledger',
+      'Cost per Kilometer (CPK) calculation engine and multi-tier approval justification for premature replacement',
+      'Granular role-based access control (RBAC) with dynamic button permissions and plant isolation',
+    ],
+    role: 'Core Full-Stack Developer',
+    clientOrContext: 'PT Elnusa Petrofin (Pertamina Patra Niaga Group)',
+    year: '2023 - 2025',
+    highlights: [
+      'Engineered dedicated SSR-based tyre management platform extracted from MMS into high-throughput operations system',
+      'Implemented automated Cost per KM (CPK) metrics and multi-tier digital justification workflows',
+    ],
+  },
 ];
